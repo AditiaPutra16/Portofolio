@@ -629,7 +629,43 @@
 
       /* ===== MOBILE FOTO — CARD HORIZONTAL ===== */
       .about-mobile-photo {
-        display: none; /* hidden by default, shown on mobile */
+        display: none; /* hidden by default, shown on tablet/mobile */
+      }
+      .about-mobile-photo-img {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid rgba(59, 130, 246, 0.4);
+        flex-shrink: 0;
+      }
+      .about-mobile-photo-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .about-mobile-photo-name {
+        font-family: var(--font-display);
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: var(--white);
+        letter-spacing: -0.02em;
+      }
+      .about-mobile-photo-role {
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        color: var(--cyan);
+      }
+      .about-mobile-photo-badge {
+        margin-top: 4px;
+        display: inline-block;
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        padding: 3px 10px;
+        border-radius: 100px;
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        color: var(--blue-light);
+        background: rgba(59, 130, 246, 0.06);
       }
 
       /* ===== PROJECTS ===== */
@@ -1204,6 +1240,19 @@
         .about-img-wrap {
           display: none;
         }
+        /* Tampilkan mobile photo card mulai dari tablet */
+        .about-mobile-photo {
+          display: flex !important;
+          align-items: center;
+          gap: 20px;
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 16px;
+          padding: 20px;
+          margin-bottom: 32px;
+          opacity: 1 !important;
+          transform: none !important;
+        }
         .projects-grid {
           grid-template-columns: 1fr 1fr;
         }
@@ -1245,52 +1294,14 @@
           left: 24px;
         }
 
-        /* ===== MOBILE FOTO — tampil sebagai card di atas teks ===== */
+        /* ===== MOBILE FOTO — ukuran lebih compact di HP ===== */
         .about-mobile-photo {
-          display: flex;
-          align-items: center;
-          gap: 20px;
-          background: var(--surface);
-          border: 1px solid var(--border);
-          border-radius: 16px;
-          padding: 20px;
-          margin-bottom: 32px;
+          padding: 16px;
+          gap: 16px;
         }
         .about-mobile-photo-img {
-          width: 90px;
-          height: 90px;
-          border-radius: 50%;
-          object-fit: cover;
-          border: 2px solid rgba(59, 130, 246, 0.4);
-          flex-shrink: 0;
-        }
-        .about-mobile-photo-info {
-          display: flex;
-          flex-direction: column;
-          gap: 4px;
-        }
-        .about-mobile-photo-name {
-          font-family: var(--font-display);
-          font-size: 1.15rem;
-          font-weight: 800;
-          color: var(--white);
-          letter-spacing: -0.02em;
-        }
-        .about-mobile-photo-role {
-          font-family: var(--font-mono);
-          font-size: 0.72rem;
-          color: var(--cyan);
-        }
-        .about-mobile-photo-badge {
-          margin-top: 4px;
-          display: inline-block;
-          font-family: var(--font-mono);
-          font-size: 0.65rem;
-          padding: 3px 10px;
-          border-radius: 100px;
-          border: 1px solid rgba(59, 130, 246, 0.3);
-          color: var(--blue-light);
-          background: rgba(59, 130, 246, 0.06);
+          width: 72px;
+          height: 72px;
         }
 
         .projects-grid {
@@ -1474,7 +1485,7 @@
 
         <div>
           <!-- Mobile photo card (hidden on desktop, shown on mobile) -->
-          <div class="about-mobile-photo reveal">
+          <div class="about-mobile-photo">
             <img
               src="file/foto.JPG"
               alt="Foto Aditia Putra"
