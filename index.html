@@ -76,6 +76,15 @@
         z-index: 9998;
         transition: transform 0.15s ease, width 0.2s, height 0.2s;
       }
+      @media (max-width: 768px) {
+        body {
+          cursor: auto;
+        }
+        .cursor,
+        .cursor-ring {
+          display: none;
+        }
+      }
 
       /* ===== NOISE OVERLAY ===== */
       body::before {
@@ -149,18 +158,51 @@
       .nav-links a:hover::after {
         transform: scaleX(1);
       }
+
+      /* ===== HAMBURGER — ANIMASI X ===== */
       .hamburger {
         display: none;
         flex-direction: column;
+        justify-content: center;
         gap: 5px;
+        width: 40px;
+        height: 40px;
         cursor: pointer;
+        padding: 8px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: rgba(59, 130, 246, 0.05);
+        transition: border-color 0.2s, background 0.2s;
+        position: relative;
+        z-index: 200;
+      }
+      .hamburger:hover {
+        border-color: rgba(59, 130, 246, 0.4);
+        background: rgba(59, 130, 246, 0.1);
       }
       .hamburger span {
         display: block;
         width: 22px;
         height: 1.5px;
         background: var(--white);
-        transition: 0.3s;
+        border-radius: 2px;
+        transition: transform 0.35s cubic-bezier(0.23, 1, 0.32, 1),
+          opacity 0.2s ease, background 0.2s;
+        transform-origin: center;
+      }
+      /* State aktif — animasi ke X */
+      .hamburger.active span:nth-child(1) {
+        transform: translateY(6.5px) rotate(45deg);
+      }
+      .hamburger.active span:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+      }
+      .hamburger.active span:nth-child(3) {
+        transform: translateY(-6.5px) rotate(-45deg);
+      }
+      .hamburger.active span {
+        background: var(--blue-light);
       }
 
       /* ===== HERO ===== */
@@ -270,6 +312,7 @@
         margin-bottom: 20px;
         opacity: 0;
         animation: fadeUp 0.7s 0.4s forwards;
+        min-height: 1.4em;
       }
       .hero-desc {
         font-size: 1.05rem;
@@ -367,7 +410,6 @@
           left: 100%;
         }
       }
-
       .hero-stats {
         position: absolute;
         right: 60px;
@@ -583,6 +625,11 @@
       }
       .tech-chip span {
         font-size: 1.4rem;
+      }
+
+      /* ===== MOBILE FOTO — CARD HORIZONTAL ===== */
+      .about-mobile-photo {
+        display: none; /* hidden by default, shown on mobile */
       }
 
       /* ===== PROJECTS ===== */
@@ -1021,29 +1068,6 @@
       .footer-left span {
         color: var(--blue);
       }
-      .footer-right {
-        display: flex;
-        gap: 12px;
-      }
-      .footer-social {
-        width: 36px;
-        height: 36px;
-        border-radius: 8px;
-        background: var(--surface);
-        border: 1px solid var(--border);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.85rem;
-        text-decoration: none;
-        color: var(--muted);
-        transition: border-color 0.2s, color 0.2s, transform 0.2s;
-      }
-      .footer-social:hover {
-        border-color: rgba(59, 130, 246, 0.4);
-        color: var(--blue-light);
-        transform: translateY(-2px);
-      }
 
       /* ===== SCROLL REVEAL ===== */
       .reveal {
@@ -1069,41 +1093,106 @@
         transition-delay: 0.4s;
       }
 
-      /* ===== MOBILE NAV ===== */
-      .mobile-menu {
+      /* ===== MOBILE MENU — SLIDE FROM RIGHT ===== */
+      /* Backdrop */
+      .mobile-backdrop {
         display: none;
         position: fixed;
         inset: 0;
-        background: rgba(6, 8, 16, 0.97);
-        z-index: 99;
+        background: rgba(6, 8, 16, 0.6);
+        backdrop-filter: blur(4px);
+        z-index: 150;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      .mobile-backdrop.open {
+        display: block;
+        opacity: 1;
+      }
+
+      /* Drawer panel */
+      .mobile-menu {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: min(320px, 85vw);
+        background: var(--bg2);
+        border-left: 1px solid var(--border);
+        z-index: 160;
+        display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 36px;
+        padding: 80px 32px 40px;
+        gap: 0;
+        transform: translateX(100%);
+        transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
       }
       .mobile-menu.open {
-        display: flex;
+        transform: translateX(0);
+      }
+
+      /* Menu items */
+      .mobile-menu nav-item {
+        display: block;
       }
       .mobile-menu a {
+        display: flex;
+        align-items: center;
+        gap: 14px;
         font-family: var(--font-display);
-        font-size: 2rem;
-        font-weight: 800;
-        color: var(--white);
-        text-decoration: none;
-        transition: color 0.2s;
-      }
-      .mobile-menu a:hover {
-        color: var(--blue);
-      }
-      .mobile-close {
-        position: absolute;
-        top: 24px;
-        right: 24px;
-        font-size: 1.5rem;
+        font-size: 1.4rem;
+        font-weight: 700;
         color: var(--muted);
-        background: none;
-        border: none;
-        cursor: pointer;
+        text-decoration: none;
+        padding: 16px 0;
+        border-bottom: 1px solid var(--border);
+        transition: color 0.2s, padding-left 0.2s;
+        position: relative;
+      }
+      .mobile-menu a .menu-num {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        color: var(--blue);
+        opacity: 0.7;
+        min-width: 24px;
+      }
+      .mobile-menu a:last-of-type {
+        border-bottom: none;
+      }
+      .mobile-menu a:hover,
+      .mobile-menu a:active {
+        color: var(--white);
+        padding-left: 8px;
+      }
+      .mobile-menu a:hover .menu-num {
+        opacity: 1;
+      }
+
+      /* Social row at bottom of drawer */
+      .mobile-socials {
+        margin-top: auto;
+        padding-top: 32px;
+        display: flex;
+        gap: 12px;
+      }
+      .mobile-social-btn {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        text-decoration: none;
+        color: var(--muted);
+        font-size: 0.75rem;
+        font-family: var(--font-mono);
+        transition: border-color 0.2s, color 0.2s;
+      }
+      .mobile-social-btn:hover {
+        border-color: rgba(59, 130, 246, 0.4);
+        color: var(--blue-light);
       }
 
       /* ===== RESPONSIVE ===== */
@@ -1111,6 +1200,7 @@
         .about-grid {
           grid-template-columns: 1fr;
         }
+        /* Desktop photo hidden on tablet/mobile — shown via mobile card instead */
         .about-img-wrap {
           display: none;
         }
@@ -1127,6 +1217,7 @@
           grid-template-columns: 1fr;
         }
       }
+
       @media (max-width: 768px) {
         nav {
           padding: 16px 24px;
@@ -1140,6 +1231,7 @@
         .hamburger {
           display: flex;
         }
+
         section {
           padding: 70px 24px;
         }
@@ -1152,6 +1244,55 @@
         .hero-scroll {
           left: 24px;
         }
+
+        /* ===== MOBILE FOTO — tampil sebagai card di atas teks ===== */
+        .about-mobile-photo {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 16px;
+          padding: 20px;
+          margin-bottom: 32px;
+        }
+        .about-mobile-photo-img {
+          width: 90px;
+          height: 90px;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 2px solid rgba(59, 130, 246, 0.4);
+          flex-shrink: 0;
+        }
+        .about-mobile-photo-info {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
+        .about-mobile-photo-name {
+          font-family: var(--font-display);
+          font-size: 1.15rem;
+          font-weight: 800;
+          color: var(--white);
+          letter-spacing: -0.02em;
+        }
+        .about-mobile-photo-role {
+          font-family: var(--font-mono);
+          font-size: 0.72rem;
+          color: var(--cyan);
+        }
+        .about-mobile-photo-badge {
+          margin-top: 4px;
+          display: inline-block;
+          font-family: var(--font-mono);
+          font-size: 0.65rem;
+          padding: 3px 10px;
+          border-radius: 100px;
+          border: 1px solid rgba(59, 130, 246, 0.3);
+          color: var(--blue-light);
+          background: rgba(59, 130, 246, 0.06);
+        }
+
         .projects-grid {
           grid-template-columns: 1fr;
         }
@@ -1196,14 +1337,44 @@
       </div>
     </nav>
 
-    <!-- MOBILE MENU -->
+    <!-- MOBILE BACKDROP -->
+    <div class="mobile-backdrop" id="mobileBackdrop"></div>
+
+    <!-- MOBILE MENU DRAWER -->
     <div class="mobile-menu" id="mobileMenu">
-      <button class="mobile-close" id="mobileClose">✕</button>
-      <a href="#about" onclick="closeMobile()">About</a>
-      <a href="#projects" onclick="closeMobile()">Projects</a>
-      <a href="#skills" onclick="closeMobile()">Skills</a>
-      <a href="#experience" onclick="closeMobile()">Experience</a>
-      <a href="#contact" onclick="closeMobile()">Contact</a>
+      <a href="#about" onclick="closeMobile()">
+        <span class="menu-num">01</span>About
+      </a>
+      <a href="#projects" onclick="closeMobile()">
+        <span class="menu-num">02</span>Projects
+      </a>
+      <a href="#skills" onclick="closeMobile()">
+        <span class="menu-num">03</span>Skills
+      </a>
+      <a href="#experience" onclick="closeMobile()">
+        <span class="menu-num">04</span>Experience
+      </a>
+      <a href="#contact" onclick="closeMobile()">
+        <span class="menu-num">05</span>Contact
+      </a>
+
+      <div class="mobile-socials">
+        <a
+          href="https://github.com/AditiaPutra16"
+          target="_blank"
+          class="mobile-social-btn"
+          >GitHub</a
+        >
+        <a
+          href="https://www.linkedin.com/in/aditia-putra-41a579279/"
+          target="_blank"
+          class="mobile-social-btn"
+          >LinkedIn</a
+        >
+        <a href="mailto:aditiaputra6907@gmail.com" class="mobile-social-btn"
+          >Email</a
+        >
+      </div>
     </div>
 
     <!-- ===== HERO ===== -->
@@ -1273,10 +1444,6 @@
           <div class="stat-num">2<span>+</span></div>
           <div class="stat-label">Years Coding</div>
         </div>
-        <!-- <div class="stat">
-          <div class="stat-num">3<span>+</span></div>
-          <div class="stat-label">Org Roles</div>
-        </div> -->
       </div>
     </section>
 
@@ -1285,6 +1452,7 @@
     <!-- ===== ABOUT ===== -->
     <section id="about">
       <div class="about-grid">
+        <!-- Desktop photo (hidden on mobile via CSS) -->
         <div class="about-img-wrap">
           <div class="about-img-frame">
             <img
@@ -1303,7 +1471,26 @@
             <div class="about-badge-label">Fresh Graduate</div>
           </div>
         </div>
+
         <div>
+          <!-- Mobile photo card (hidden on desktop, shown on mobile) -->
+          <div class="about-mobile-photo reveal">
+            <img
+              src="file/foto.JPG"
+              alt="Foto Aditia Putra"
+              class="about-mobile-photo-img"
+            />
+            <div class="about-mobile-photo-info">
+              <div class="about-mobile-photo-name">Aditia Putra</div>
+              <div class="about-mobile-photo-role">
+                // Full Stack · Data Science
+              </div>
+              <span class="about-mobile-photo-badge"
+                >S.Kom · Fresh Graduate</span
+              >
+            </div>
+          </div>
+
           <p class="section-label reveal">About Me</p>
           <h2 class="section-title reveal reveal-delay-1">
             Mengenal <span class="hl">Lebih Dekat</span>
@@ -1322,11 +1509,7 @@
             pengembangan sistem serta mengasah keterampilan teknis dan analitis
             secara mendalam. Selain itu, partisipasi saya dalam berbagai proyek
             kursus, bootcamp, dan kompetisi di bidang data semakin memperkuat
-            kemampuan saya dalam mengolah dan menganalisis data. Pengalaman saya
-            dalam berorganisasi selama dua periode juga membekali saya dengan
-            kemampuan komunikasi yang adaptif, kepemimpinan yang kuat,
-            kolaborasi yang solid, serta kemampuan beradaptasi yang tinggi dalam
-            menghadapi berbagai tantangan.
+            kemampuan saya dalam mengolah dan menganalisis data.
           </p>
           <p class="about-text reveal reveal-delay-3">
             Saya percaya bahwa kombinasi antara soft skill dan hard skill yang
@@ -1344,64 +1527,56 @@
                 src="https://cdn.simpleicons.org/html5/E34F26"
                 width="20"
                 height="20"
-              />
-              HTML/CSS
+              />HTML/CSS
             </div>
             <div class="tech-chip">
               <img
                 src="https://cdn.simpleicons.org/javascript/F7DF1E"
                 width="20"
                 height="20"
-              />
-              JavaScript
+              />JavaScript
             </div>
             <div class="tech-chip">
               <img
                 src="https://cdn.simpleicons.org/php/777BB4"
                 width="20"
                 height="20"
-              />
-              PHP
+              />PHP
             </div>
             <div class="tech-chip">
               <img
                 src="https://cdn.simpleicons.org/mysql/4479A1"
                 width="20"
                 height="20"
-              />
-              MySQL
+              />MySQL
             </div>
             <div class="tech-chip">
               <img
                 src="https://cdn.simpleicons.org/codeigniter/EF4223"
                 width="20"
                 height="20"
-              />
-              CodeIgniter 3
+              />CodeIgniter 3
             </div>
             <div class="tech-chip">
               <img
                 src="https://cdn.simpleicons.org/laravel/FF2D20"
                 width="20"
                 height="20"
-              />
-              Laravel
+              />Laravel
             </div>
             <div class="tech-chip">
               <img
                 src="https://cdn.simpleicons.org/git/F05032"
                 width="20"
                 height="20"
-              />
-              Git
+              />Git
             </div>
             <div class="tech-chip">
               <img
                 src="https://cdn.simpleicons.org/figma/F24E1E"
                 width="20"
                 height="20"
-              />
-              Figma
+              />Figma
             </div>
           </div>
         </div>
@@ -1485,7 +1660,6 @@
               serta proses peminjaman dan pengembalian.
             </p>
             <div class="project-links">
-              <!-- <a href="#" class="project-link">Live Demo</a> -->
               <a
                 href="https://github.com/AditiaPutra16/book_rentt"
                 class="project-link"
@@ -1499,7 +1673,7 @@
           <div class="project-thumb">
             <img
               src="file/kekom.png"
-              alt="SiManKeu"
+              alt="Enkripsi"
               style="
                 width: 100%;
                 height: 100%;
@@ -1513,21 +1687,17 @@
             <div class="project-tags">
               <span class="project-tag">Java</span>
               <span class="project-tag">HTML/CSS</span>
-              <span class="project-tag">Encription</span>
+              <span class="project-tag">Encryption</span>
               <span class="project-tag">Decryption</span>
             </div>
-            <h3 class="project-title">File Encription & Decryption</h3>
+            <h3 class="project-title">File Encryption & Decryption</h3>
             <p class="project-desc">
               File Encryption & Decryption with RSA Key merupakan aplikasi yang
               dirancang untuk mengamankan file dengan menggunakan algoritma
-              kriptografi RSA. Sistem ini memungkinkan pengguna untuk melakukan
-              proses enkripsi file menjadi bentuk yang tidak dapat dibaca tanpa
-              kunci privat, serta melakukan dekripsi untuk mengembalikan file ke
-              bentuk aslinya. Implementasi ini bertujuan untuk meningkatkan
-              keamanan data dan menjaga kerahasiaan informasi.
+              kriptografi RSA. Sistem ini memungkinkan enkripsi dan dekripsi
+              file untuk menjaga kerahasiaan informasi.
             </p>
             <div class="project-links">
-              <!-- <a href="#" class="project-link">Live Demo</a> -->
               <a
                 href="https://github.com/AditiaPutra16/Hybrid-Cryptography-AES-RSA/tree/main/Final_Kekom"
                 class="project-link"
@@ -1541,7 +1711,7 @@
           <div class="project-thumb">
             <img
               src="file/cuaca2.png"
-              alt="SiManKeu"
+              alt="Weather"
               style="
                 width: 100%;
                 height: 100%;
@@ -1554,21 +1724,17 @@
           <div class="project-body">
             <div class="project-tags">
               <span class="project-tag">Java</span>
-              <span class="project-tag">Konlin</span>
               <span class="project-tag">API</span>
               <span class="project-tag">Android Studio</span>
             </div>
             <h3 class="project-title">Real Time Weather</h3>
             <p class="project-desc">
-              Real Time Weather merupakan aplikasi android yang dirancang untuk
-              menampilkan informasi cuaca secara real-time berdasarkan lokasi
-              yang dicari. Sistem ini memanfaatkan integrasi API cuaca untuk
-              menyajikan data seperti suhu, kelembapan, kecepatan angin, kondisi
-              cuaca terkini secara akurat dan prediksi cuaca 7 hari yang akan
-              datang.
+              Real Time Weather merupakan aplikasi android yang menampilkan
+              informasi cuaca secara real-time berdasarkan lokasi yang dicari,
+              termasuk prediksi cuaca 7 hari ke depan menggunakan integrasi API
+              cuaca.
             </p>
             <div class="project-links">
-              <!-- <a href="#" class="project-link">Live Demo</a> -->
               <a
                 href="https://github.com/AditiaPutra16/AplikasiCuaca"
                 class="project-link"
@@ -1619,22 +1785,16 @@
           <div class="project-body">
             <div class="project-tags">
               <span class="project-tag">Python</span>
-              <span class="project-tag">Data Engineer</span>
+              <span class="project-tag">NLP</span>
               <span class="project-tag">Machine Learning</span>
             </div>
             <h3 class="project-title">Text Summarization Sundanese</h3>
             <p class="project-desc">
-              Ext Summarization Sundanese merupakan sistem berbasis pengolahan
-              bahasa alami (Natural Language Processing) yang dirancang untuk
-              menghasilkan ringkasan teks berbahasa Sunda secara otomatis
-              menggunakan metode extractive summarization. Sistem ini bekerja
-              dengan menyeleksi kalimat-kalimat penting dari suatu dokumen
-              berdasarkan tingkat relevansi dan bobot tertentu, sehingga
-              menghasilkan ringkasan yang tetap mempertahankan makna utama dari
-              teks asli.
+              Sistem berbasis NLP yang menghasilkan ringkasan teks berbahasa
+              Sunda secara otomatis menggunakan metode extractive summarization,
+              mempertahankan makna utama dari teks asli.
             </p>
             <div class="project-links">
-              <!-- <a href="#" class="project-link">Live Demo</a> -->
               <a
                 href="https://github.com/AditiaPutra16/Text-Summarization-Sundanese-Language"
                 class="project-link"
@@ -1692,7 +1852,6 @@
                   transition: opacity 0.8s ease;
                 "
               />
-
               <img
                 src="file/qms_sys.png"
                 class="slide-img"
@@ -1706,7 +1865,6 @@
                   transition: opacity 0.8s ease;
                 "
               />
-
               <img
                 src="file/qms_bulk.png"
                 class="slide-img"
@@ -1720,7 +1878,6 @@
                   transition: opacity 0.8s ease;
                 "
               />
-
               <img
                 src="file/qms_ins.png"
                 class="slide-img"
@@ -1734,7 +1891,6 @@
                   transition: opacity 0.8s ease;
                 "
               />
-
               <img
                 src="file/qms_create.png"
                 class="slide-img"
@@ -1748,7 +1904,6 @@
                   transition: opacity 0.8s ease;
                 "
               />
-
               <img
                 src="file/qms_input.png"
                 class="slide-img"
@@ -1762,7 +1917,6 @@
                   transition: opacity 0.8s ease;
                 "
               />
-
               <img
                 src="file/qms_chart.png"
                 class="slide-img"
@@ -1782,26 +1936,16 @@
           <div class="project-body">
             <div class="project-tags">
               <span class="project-tag">PHP</span>
-              <span class="project-tag">Javascript</span>
+              <span class="project-tag">JavaScript</span>
               <span class="project-tag">SQL Server</span>
               <span class="project-tag">CI3</span>
             </div>
             <h3 class="project-title">Quality Management System</h3>
             <p class="project-desc">
-              Quality Management System (QMS) adalah suatu sistem terintegrasi
-              yang digunakan untuk mengelola kualitas produk. Sistem ini
-              dirancang untuk memastikan bahwa setiap aktivitas operasional
-              berjalan sesuai dengan standar yang telah ditetapkan, sehingga
-              mampu memenuhi kebutuhan dan harapan pelanggan secara konsisten.
+              Quality Management System (QMS) adalah sistem terintegrasi untuk
+              mengelola kualitas produk, memastikan setiap aktivitas operasional
+              berjalan sesuai standar yang ditetapkan secara konsisten.
             </p>
-            <div class="project-links">
-              <!-- <a href="#" class="project-link">Live Demo</a> -->
-              <!-- <a
-                href=""
-                class="project-link"
-                >GitHub</a
-              > -->
-            </div>
           </div>
         </div>
 
@@ -1853,7 +1997,6 @@
                   transition: opacity 0.8s ease;
                 "
               />
-
               <img
                 src="file/kento.png"
                 class="slide-img"
@@ -1867,7 +2010,6 @@
                   transition: opacity 0.8s ease;
                 "
               />
-
               <img
                 src="file/kento_report.png"
                 class="slide-img"
@@ -1881,7 +2023,6 @@
                   transition: opacity 0.8s ease;
                 "
               />
-
               <img
                 src="file/psa.png"
                 class="slide-img"
@@ -1895,7 +2036,6 @@
                   transition: opacity 0.8s ease;
                 "
               />
-
               <img
                 src="file/psa_report.png"
                 class="slide-img"
@@ -1915,30 +2055,17 @@
           <div class="project-body">
             <div class="project-tags">
               <span class="project-tag">PHP</span>
-              <span class="project-tag">Javascript</span>
+              <span class="project-tag">JavaScript</span>
               <span class="project-tag">SQL Server</span>
               <span class="project-tag">CI3</span>
             </div>
             <h3 class="project-title">Digi-Kentokai</h3>
             <p class="project-desc">
-              Digi-Kentokai merupakan sistem digital yang digunakan dalam
-              industri manufaktur untuk mendukung proses audit pada area
-              packaging melalui checklist yang terstandarisasi. Sistem ini
-              berfungsi untuk memastikan bahwa setiap proses pengemasan telah
-              memenuhi standar kualitas, keamanan, dan prosedur operasional yang
-              berlaku. Digi-Kentokai memungkinkan pencatatan hasil audit secara
-              real-time, mempermudah proses monitoring, serta meningkatkan
-              akurasi dan transparansi dalam evaluasi kepatuhan terhadap standar
+              Sistem digital untuk mendukung proses audit pada area packaging
+              melalui checklist terstandarisasi, memungkinkan pencatatan
+              real-time dan meningkatkan transparansi evaluasi kepatuhan standar
               packaging.
             </p>
-            <div class="project-links">
-              <!-- <a href="#" class="project-link">Live Demo</a> -->
-              <!-- <a
-                href=""
-                class="project-link"
-                >GitHub</a
-              > -->
-            </div>
           </div>
         </div>
       </div>
@@ -2130,16 +2257,15 @@
               PT TD AUTOMOTIVE COMPRESSOR INDONESIA
             </div>
             <p class="timeline-desc">
-              Development aplikasi berbasis web Quality Management System (QMS).
-              <br />
-              Development aplikasi berbasis web Tooling Management System (TMS).
-              <br />
-              Development aplikasi berbasis web Digi-Kentokai System. <br />
-              Melakukan analisis kebutuhan user. <br />
-              Menyusun desain projek dan desain database. <br />
-              Implementasi rancangan dengan menggunakan PHP, SQL Server,
-              Laragon, dan Git Server. <br />
-              Aktif dalam setiap meeting yang berkaitan dengan project.
+              Development aplikasi berbasis web Quality Management System
+              (QMS).<br />
+              Development aplikasi berbasis web Tooling Management System
+              (TMS).<br />
+              Development aplikasi berbasis web Digi-Kentokai System.<br />
+              Melakukan analisis kebutuhan user dan menyusun desain projek &
+              database.<br />
+              Implementasi rancangan dengan PHP, SQL Server, Laragon, dan Git
+              Server.
             </p>
             <div class="timeline-badges">
               <span class="timeline-badge">PHP</span>
@@ -2147,8 +2273,6 @@
               <span class="timeline-badge">JavaScript</span>
               <span class="timeline-badge">SQL Server</span>
               <span class="timeline-badge">Git</span>
-              <span class="timeline-badge">Manajemen Waktu</span>
-              <span class="timeline-badge">Kerja tim</span>
             </div>
           </div>
         </div>
@@ -2162,13 +2286,9 @@
               Informatika - Universitas Al Azhar Indonesia
             </div>
             <p class="timeline-desc">
-              Membantu mahasiswa dalam memahami konsep pemrograman dasar,
-              sintaksis, dan logika. <br />
-              Memberikan bimbingan dalam menulis kode C/C++ yang efisien dan
-              terstandarisasi. <br />
-              Mengevaluasi tugas dengan umpan balik yang konstruktif. <br />
-              Melakukan sesi konsultasi untuk membantu mahasiswa mengatasi
-              tantangan dalam mata kuliah terkait.
+              Membantu mahasiswa memahami konsep pemrograman dasar, sintaksis,
+              dan logika. Memberikan bimbingan penulisan kode C/C++ yang efisien
+              dan terstandarisasi.
             </p>
             <div class="timeline-badges">
               <span class="timeline-badge">C/C++</span>
@@ -2181,7 +2301,7 @@
         <div class="timeline-item reveal reveal-delay-2">
           <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
           <div class="timeline-content">
-            <div class="timeline-period">Mar 2024 - Agu 2024</div>
+            <div class="timeline-period">Mar 2024 — Agu 2024</div>
             <div class="timeline-role">
               Asisten Praktikum Algoritma Pemrograman
             </div>
@@ -2189,13 +2309,9 @@
               Informatika - Universitas Al Azhar Indonesia
             </div>
             <p class="timeline-desc">
-              Membantu mahasiswa dalam memahami konsep dasar algoritma, struktur
-              data, dan logika pemrograman. <br />
-              Memberikan bimbingan dalam menulis kode Python yang efisien dan
-              terstandarisasi. <br />
-              Mengevaluasi tugas dengan umpan balik yang konstruktif. <br />
-              Melakukan sesi konsultasi untuk membantu mahasiswa mengatasi
-              tantangan dalam mata kuliah terkait.
+              Membantu mahasiswa dalam memahami algoritma, struktur data, dan
+              logika pemrograman Python. Mengevaluasi tugas dengan umpan balik
+              konstruktif.
             </p>
             <div class="timeline-badges">
               <span class="timeline-badge">Python</span>
@@ -2208,22 +2324,18 @@
         <div class="timeline-item reveal reveal-delay-3">
           <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
           <div class="timeline-content">
-            <div class="timeline-period">Mar 2024 - Feb 2025</div>
+            <div class="timeline-period">Mar 2024 — Feb 2025</div>
             <div class="timeline-role">Anggota Departemen Humas & Advokasi</div>
             <div class="timeline-org">Himpunan Mahasiswa Informatika</div>
             <p class="timeline-desc">
-              Membangun hubungan dengan pihak eksternal dan internal. <br />
-              Menjalankan program kerja diantaranya Studi Ekskursi, IF berbagi,
-              Kotak Aspirasi, Studi Banding, Glowing, Celebrate Day. <br />
-              Ketua pelaksana program kerja Studi Ekskursi. <br />
-              Memperjuangkan dan mengadvokasi kepentingan mahasiswa dalam
-              berbagai isu yang relevan.
+              Membangun hubungan eksternal dan internal. Ketua pelaksana program
+              kerja Studi Ekskursi. Mengadvokasi kepentingan mahasiswa dalam
+              berbagai isu relevan.
             </p>
             <div class="timeline-badges">
               <span class="timeline-badge">Bekerja Tim</span>
               <span class="timeline-badge">Kepemimpinan</span>
               <span class="timeline-badge">Manajemen Waktu</span>
-              <span class="timeline-badge">Pemecahan Masalah</span>
             </div>
           </div>
         </div>
@@ -2231,29 +2343,17 @@
         <div class="timeline-item reveal reveal-delay-3">
           <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
           <div class="timeline-content">
-            <div class="timeline-period">Mar 2023 - Feb 2024</div>
-            <div class="timeline-role">
-              Anggota Departemen Pengembangan Sumber Daya Manusai (PSDM)
-            </div>
+            <div class="timeline-period">Mar 2023 — Feb 2024</div>
+            <div class="timeline-role">Anggota Departemen PSDM</div>
             <div class="timeline-org">Himpunan Mahasiswa Informatika</div>
             <p class="timeline-desc">
-              Menjabat sebagai sekretaris divisi dengan tanggung jawab mengelola
-              administrasi, dokumentasi kegiatan, serta penyusunan laporan
-              program kerja. <br />
-              Berkontribusi dalam perencanaan dan pelaksanaan program Latihan
-              Dasar Kepemimpinan (LDKM) bagi mahasiswa baru guna membangun
-              karakter kepemimpinan dan kerja sama tim. <br />
-              Terlibat dalam penyelenggaraan program Pekan Olahraga (SONIC)
-              sebagai sarana meningkatkan kebersamaan dan sportivitas antar
-              mahasiswa. <br />
-              Berkolaborasi dengan anggota tim dalam mengoordinasikan kegiatan,
-              memastikan program kerja berjalan sesuai rencana dan timeline.
+              Sekretaris divisi dengan tanggung jawab administrasi dan
+              dokumentasi kegiatan. Berkontribusi dalam program LDKM dan Pekan
+              Olahraga (SONIC).
             </p>
             <div class="timeline-badges">
               <span class="timeline-badge">Bekerja Tim</span>
               <span class="timeline-badge">Kepemimpinan</span>
-              <span class="timeline-badge">Manajemen Waktu</span>
-              <span class="timeline-badge">Pemecahan Masalah</span>
               <span class="timeline-badge">Administrasi</span>
             </div>
           </div>
@@ -2319,7 +2419,7 @@
               </div>
             </a>
             <a
-              href="https://github.com/repos?q=owner%3A%40me"
+              href="https://github.com/AditiaPutra16"
               target="_blank"
               class="contact-link-item"
             >
@@ -2332,7 +2432,7 @@
               </div>
               <div>
                 <div class="contact-link-label">GitHub</div>
-                <div class="contact-link-val">github.com/AditiaPutra</div>
+                <div class="contact-link-val">github.com/AditiaPutra16</div>
               </div>
             </a>
             <a
@@ -2410,12 +2510,6 @@
       <div class="footer-left">
         &copy; 2026 <span>Aditia Putra</span> · Designed & Built with ❤️
       </div>
-      <!-- <div class="footer-right">
-    <a href="#" class="footer-social" title="GitHub">GH</a>
-    <a href="#" class="footer-social" title="LinkedIn">in</a>
-    <a href="#" class="footer-social" title="Instagram">IG</a>
-    <a href="#" class="footer-social" title="Twitter">TW</a>
-  </div> -->
     </footer>
 
     <script>
@@ -2433,8 +2527,10 @@
       function animCursor() {
         rx += (mx - rx) * 0.15;
         ry += (my - ry) * 0.15;
-        cursor.style.transform = `translate(${mx - 5}px, ${my - 5}px)`;
-        ring.style.transform = `translate(${rx - 16}px, ${ry - 16}px)`;
+        if (cursor)
+          cursor.style.transform = `translate(${mx - 5}px, ${my - 5}px)`;
+        if (ring)
+          ring.style.transform = `translate(${rx - 16}px, ${ry - 16}px)`;
         requestAnimationFrame(animCursor);
       }
       animCursor();
@@ -2442,14 +2538,18 @@
         .querySelectorAll("a, button, .project-card, .soft-card, .tech-chip")
         .forEach((el) => {
           el.addEventListener("mouseenter", () => {
-            ring.style.width = "52px";
-            ring.style.height = "52px";
-            ring.style.borderColor = "rgba(59,130,246,0.7)";
+            if (ring) {
+              ring.style.width = "52px";
+              ring.style.height = "52px";
+              ring.style.borderColor = "rgba(59,130,246,0.7)";
+            }
           });
           el.addEventListener("mouseleave", () => {
-            ring.style.width = "32px";
-            ring.style.height = "32px";
-            ring.style.borderColor = "rgba(59,130,246,0.5)";
+            if (ring) {
+              ring.style.width = "32px";
+              ring.style.height = "32px";
+              ring.style.borderColor = "rgba(59,130,246,0.5)";
+            }
           });
         });
 
@@ -2459,25 +2559,43 @@
         nav.classList.toggle("scrolled", window.scrollY > 60);
       });
 
-      /* ===== MOBILE MENU ===== */
-      document.getElementById("hamburger").addEventListener("click", () => {
-        document.getElementById("mobileMenu").classList.add("open");
-      });
-      document
-        .getElementById("mobileClose")
-        .addEventListener("click", closeMobile);
-      function closeMobile() {
-        document.getElementById("mobileMenu").classList.remove("open");
+      /* ===== HAMBURGER + MOBILE MENU ===== */
+      const hamburger = document.getElementById("hamburger");
+      const mobileMenu = document.getElementById("mobileMenu");
+      const backdrop = document.getElementById("mobileBackdrop");
+
+      function openMobile() {
+        hamburger.classList.add("active");
+        mobileMenu.classList.add("open");
+        backdrop.classList.add("open");
+        document.body.style.overflow = "hidden"; // cegah scroll saat menu terbuka
       }
+
+      function closeMobile() {
+        hamburger.classList.remove("active");
+        mobileMenu.classList.remove("open");
+        backdrop.classList.remove("open");
+        document.body.style.overflow = "";
+      }
+
+      hamburger.addEventListener("click", () => {
+        hamburger.classList.contains("active") ? closeMobile() : openMobile();
+      });
+
+      // Tutup saat klik backdrop
+      backdrop.addEventListener("click", closeMobile);
+
+      // Tutup saat tekan Escape
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeMobile();
+      });
 
       /* ===== SCROLL REVEAL ===== */
       const reveals = document.querySelectorAll(".reveal");
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((e) => {
-            if (e.isIntersecting) {
-              e.target.classList.add("visible");
-            }
+            if (e.isIntersecting) e.target.classList.add("visible");
           });
         },
         { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
@@ -2490,9 +2608,8 @@
           entries.forEach((e) => {
             if (e.isIntersecting) {
               e.target.querySelectorAll(".skill-fill").forEach((bar) => {
-                const w = bar.dataset.w;
                 setTimeout(() => {
-                  bar.style.width = w + "%";
+                  bar.style.width = bar.dataset.w + "%";
                 }, 200);
               });
             }
@@ -2533,7 +2650,7 @@
         });
       });
 
-      /* ===== SMOOTH TYPE EFFECT on hero ===== */
+      /* ===== TYPEWRITER EFFECT ===== */
       const headline = document.querySelector(".hero-headline");
       const texts = [
         "// Web Developer · Data Science · Tech Explorer",
@@ -2545,13 +2662,10 @@
         isDeleting = false;
       function typeEffect() {
         const current = texts[tIdx];
-        if (isDeleting) {
-          headline.textContent = current.substring(0, cIdx - 1);
-          cIdx--;
-        } else {
-          headline.textContent = current.substring(0, cIdx + 1);
-          cIdx++;
-        }
+        headline.textContent = isDeleting
+          ? current.substring(0, cIdx - 1)
+          : current.substring(0, cIdx + 1);
+        isDeleting ? cIdx-- : cIdx++;
         let speed = isDeleting ? 30 : 55;
         if (!isDeleting && cIdx === current.length) {
           speed = 2500;
@@ -2566,6 +2680,7 @@
       }
       setTimeout(typeEffect, 1200);
 
+      /* ===== SLIDESHOW ===== */
       document.querySelectorAll(".slideshow").forEach((slideshow) => {
         const imgs = slideshow.querySelectorAll(".slide-img");
         let current = 0;
@@ -2573,7 +2688,7 @@
           imgs[current].style.opacity = "0";
           current = (current + 1) % imgs.length;
           imgs[current].style.opacity = "1";
-        }, 3000); // ganti angka untuk kecepatan (ms)
+        }, 3000);
       });
     </script>
   </body>
