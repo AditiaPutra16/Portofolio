@@ -1779,7 +1779,7 @@
 
           const encodedText = encodeURIComponent(text);
 
-        const url = `https://wa.me/${noWA}?text=${encodedText}`;
+        const url = `https://api.whatsapp.com/send?phone=${noWA}?text=${encodedText}`;
 
         window.open(url, "_blank");
         }
