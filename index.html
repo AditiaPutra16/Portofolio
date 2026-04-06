@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -23,7 +23,12 @@
         overflow-x: hidden;
       }
 
-      :root {
+      /* ============================================================
+         PERUBAHAN 1: CSS VARIABLES — DUA TEMA
+         Semua warna dikontrol via [data-theme] di tag <html>.
+         Komponen tidak perlu diubah, cukup variabelnya yang berganti.
+      ============================================================ */
+      [data-theme="dark"] {
         --bg: #060810;
         --bg2: #0c1020;
         --bg3: #111827;
@@ -36,9 +41,43 @@
         --muted: #64748b;
         --text: #e2e8f0;
         --border: rgba(59, 130, 246, 0.12);
+        --border-solid: rgba(59, 130, 246, 0.12);
         --font-display: "Syne", sans-serif;
         --font-body: "DM Sans", sans-serif;
         --font-mono: "JetBrains Mono", monospace;
+        /* Khusus dark: cursor blend mode & noise */
+        --cursor-blend: screen;
+        --noise-opacity: 0.025;
+        --hero-bg: #060810;
+        --nav-bg: rgba(6, 8, 16, 0.7);
+        --mobile-menu-bg: #0c1020;
+        --github-filter: none; /* icon github putih */
+      }
+
+      [data-theme="light"] {
+        --bg: #f8fafc;
+        --bg2: #f1f5f9;
+        --bg3: #e8edf4;
+        --surface: #ffffff;
+        --blue: #2563eb;
+        --blue-light: #3b82f6;
+        --blue-glow: rgba(37, 99, 235, 0.12);
+        --cyan: #0891b2;
+        --white: #0f172a;
+        --muted: #64748b;
+        --text: #334155;
+        --border: rgba(37, 99, 235, 0.14);
+        --border-solid: #dde4f0;
+        --font-display: "Syne", sans-serif;
+        --font-body: "DM Sans", sans-serif;
+        --font-mono: "JetBrains Mono", monospace;
+        /* Khusus light */
+        --cursor-blend: multiply;
+        --noise-opacity: 0.012;
+        --hero-bg: linear-gradient(160deg, #f0f6ff 0%, #f8fafc 50%, #f1f5f9 100%);
+        --nav-bg: rgba(248, 250, 252, 0.85);
+        --mobile-menu-bg: #f1f5f9;
+        --github-filter: brightness(0) saturate(100%) invert(10%) sepia(20%) saturate(500%) hue-rotate(200deg) brightness(80%);
       }
 
       body {
@@ -48,6 +87,8 @@
         font-size: 16px;
         line-height: 1.7;
         cursor: none;
+        /* Transisi halus saat tema berganti */
+        transition: background 0.35s ease, color 0.35s ease;
       }
 
       /* ===== CUSTOM CURSOR ===== */
@@ -62,7 +103,8 @@
         pointer-events: none;
         z-index: 9999;
         transition: transform 0.1s ease;
-        mix-blend-mode: screen;
+        /* PERUBAHAN: mix-blend-mode dari variabel agar beda di tiap tema */
+        mix-blend-mode: var(--cursor-blend);
       }
       .cursor-ring {
         width: 32px;
@@ -77,13 +119,8 @@
         transition: transform 0.15s ease, width 0.2s, height 0.2s;
       }
       @media (max-width: 768px) {
-        body {
-          cursor: auto;
-        }
-        .cursor,
-        .cursor-ring {
-          display: none;
-        }
+        body { cursor: auto; }
+        .cursor, .cursor-ring { display: none; }
       }
 
       /* ===== NOISE OVERLAY ===== */
@@ -92,7 +129,8 @@
         position: fixed;
         inset: 0;
         background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-        opacity: 0.025;
+        /* PERUBAHAN: opacity dari variabel — lebih tipis di light mode */
+        opacity: var(--noise-opacity);
         pointer-events: none;
         z-index: 0;
       }
@@ -109,12 +147,14 @@
         align-items: center;
         justify-content: space-between;
         backdrop-filter: blur(20px);
-        background: rgba(6, 8, 16, 0.7);
-        border-bottom: 1px solid var(--border);
-        transition: padding 0.3s;
+        /* PERUBAHAN: warna nav dari variabel */
+        background: var(--nav-bg);
+        border-bottom: 1px solid var(--border-solid);
+        transition: padding 0.3s, background 0.35s, box-shadow 0.3s;
       }
       nav.scrolled {
         padding: 14px 60px;
+        box-shadow: 0 2px 16px rgba(0,0,0,0.06);
       }
       .nav-logo {
         font-family: var(--font-display);
@@ -123,9 +163,7 @@
         color: var(--white);
         letter-spacing: -0.02em;
       }
-      .nav-logo span {
-        color: var(--blue);
-      }
+      .nav-logo span { color: var(--blue); }
       .nav-links {
         display: flex;
         gap: 36px;
@@ -152,14 +190,69 @@
         transform-origin: left;
         transition: transform 0.3s;
       }
-      .nav-links a:hover {
-        color: var(--blue-light);
+      .nav-links a:hover { color: var(--blue-light); }
+      .nav-links a:hover::after { transform: scaleX(1); }
+
+      /* ============================================================
+         PERUBAHAN 2: TOMBOL THEME TOGGLE
+         Ditempatkan di kanan navbar, sebelum hamburger.
+         Menampilkan ikon ☀️ (light) dan 🌙 (dark) secara bergantian.
+      ============================================================ */
+      .theme-toggle {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        border: 1px solid var(--border-solid);
+        background: rgba(59, 130, 246, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 1.1rem;
+        transition: border-color 0.2s, background 0.2s, transform 0.35s;
+        position: relative;
+        z-index: 200;
+        flex-shrink: 0;
       }
-      .nav-links a:hover::after {
-        transform: scaleX(1);
+      .theme-toggle:hover {
+        border-color: rgba(59, 130, 246, 0.4);
+        background: rgba(59, 130, 246, 0.1);
+        transform: rotate(10deg);
+      }
+      /* Ikon dark (bulan) — tampil saat tema dark */
+      .theme-toggle .icon-dark { display: flex; }
+      .theme-toggle .icon-light { display: none; }
+      [data-theme="light"] .theme-toggle .icon-dark { display: none; }
+      [data-theme="light"] .theme-toggle .icon-light { display: flex; }
+
+      /* Tooltip */
+      .theme-toggle::after {
+        content: attr(data-tip);
+        position: absolute;
+        bottom: -32px;
+        right: 0;
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        color: var(--muted);
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.2s;
+        pointer-events: none;
+        background: var(--surface);
+        padding: 2px 8px;
+        border-radius: 4px;
+        border: 1px solid var(--border-solid);
+      }
+      .theme-toggle:hover::after { opacity: 1; }
+
+      /* Nav kanan (toggle + hamburger) */
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
       }
 
-      /* ===== HAMBURGER — ANIMASI X ===== */
+      /* ===== HAMBURGER ===== */
       .hamburger {
         display: none;
         flex-direction: column;
@@ -170,7 +263,7 @@
         cursor: pointer;
         padding: 8px;
         border-radius: 8px;
-        border: 1px solid var(--border);
+        border: 1px solid var(--border-solid);
         background: rgba(59, 130, 246, 0.05);
         transition: border-color 0.2s, background 0.2s;
         position: relative;
@@ -186,24 +279,13 @@
         height: 1.5px;
         background: var(--white);
         border-radius: 2px;
-        transition: transform 0.35s cubic-bezier(0.23, 1, 0.32, 1),
-          opacity 0.2s ease, background 0.2s;
+        transition: transform 0.35s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.2s ease, background 0.2s;
         transform-origin: center;
       }
-      /* State aktif — animasi ke X */
-      .hamburger.active span:nth-child(1) {
-        transform: translateY(6.5px) rotate(45deg);
-      }
-      .hamburger.active span:nth-child(2) {
-        opacity: 0;
-        transform: scaleX(0);
-      }
-      .hamburger.active span:nth-child(3) {
-        transform: translateY(-6.5px) rotate(-45deg);
-      }
-      .hamburger.active span {
-        background: var(--blue-light);
-      }
+      .hamburger.active span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+      .hamburger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+      .hamburger.active span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+      .hamburger.active span { background: var(--blue-light); }
 
       /* ===== HERO ===== */
       #hero {
@@ -213,31 +295,27 @@
         padding: 120px 60px 80px;
         position: relative;
         overflow: hidden;
+        /* PERUBAHAN: background hero dari variabel */
+        background: var(--hero-bg);
+        transition: background 0.35s;
       }
       .hero-bg-grid {
         position: absolute;
         inset: 0;
-        background-image: linear-gradient(
-            rgba(59, 130, 246, 0.04) 1px,
-            transparent 1px
-          ),
+        background-image: linear-gradient(rgba(59, 130, 246, 0.04) 1px, transparent 1px),
           linear-gradient(90deg, rgba(59, 130, 246, 0.04) 1px, transparent 1px);
         background-size: 60px 60px;
-        mask-image: radial-gradient(
-          ellipse 80% 80% at 50% 50%,
-          black,
-          transparent
-        );
+        mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+      }
+      [data-theme="light"] .hero-bg-grid {
+        background-image: linear-gradient(rgba(37, 99, 235, 0.06) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(37, 99, 235, 0.06) 1px, transparent 1px);
       }
       .hero-glow {
         position: absolute;
         width: 600px;
         height: 600px;
-        background: radial-gradient(
-          circle,
-          rgba(59, 130, 246, 0.12) 0%,
-          transparent 70%
-        );
+        background: radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, transparent 70%);
         top: -100px;
         right: -100px;
         pointer-events: none;
@@ -246,20 +324,12 @@
         position: absolute;
         width: 400px;
         height: 400px;
-        background: radial-gradient(
-          circle,
-          rgba(6, 182, 212, 0.07) 0%,
-          transparent 70%
-        );
+        background: radial-gradient(circle, rgba(6, 182, 212, 0.07) 0%, transparent 70%);
         bottom: 0;
         left: 0;
         pointer-events: none;
       }
-      .hero-content {
-        position: relative;
-        z-index: 1;
-        max-width: 700px;
-      }
+      .hero-content { position: relative; z-index: 1; max-width: 700px; }
       .hero-tag {
         display: inline-flex;
         align-items: center;
@@ -274,21 +344,16 @@
         margin-bottom: 28px;
         opacity: 0;
         animation: fadeUp 0.6s 0.2s forwards;
+        background: rgba(59, 130, 246, 0.05);
       }
+      [data-theme="light"] .hero-tag { color: var(--blue); border-color: rgba(37,99,235,0.3); }
       .hero-tag::before {
         content: "●";
         font-size: 0.5rem;
         animation: pulse 2s infinite;
+        color: #22c55e;
       }
-      @keyframes pulse {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.3;
-        }
-      }
+      @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
       .hero-name {
         font-family: var(--font-display);
         font-size: clamp(3rem, 7vw, 5.5rem);
@@ -304,6 +369,7 @@
         color: transparent;
         -webkit-text-stroke: 1.5px var(--blue);
       }
+      [data-theme="light"] .hero-name .accent { -webkit-text-stroke-width: 2px; }
       .hero-headline {
         font-family: var(--font-mono);
         font-size: clamp(0.85rem, 2vw, 1.05rem);
@@ -343,12 +409,11 @@
         border-radius: 8px;
         text-decoration: none;
         transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
-        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+        box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
       }
       .btn-primary:hover {
         transform: translateY(-2px);
-        box-shadow: 0 0 30px rgba(59, 130, 246, 0.35);
-        background: var(--blue-light);
+        box-shadow: 0 8px 28px rgba(59, 130, 246, 0.4);
       }
       .btn-outline {
         display: inline-flex;
@@ -362,14 +427,18 @@
         font-weight: 600;
         border-radius: 8px;
         text-decoration: none;
-        transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s,
-          background 0.2s;
+        transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s, background 0.2s;
+      }
+      [data-theme="light"] .btn-outline {
+        background: white;
+        color: var(--blue);
+        border-color: rgba(37,99,235,0.35);
       }
       .btn-outline:hover {
         transform: translateY(-2px);
         background: rgba(59, 130, 246, 0.08);
         border-color: var(--blue);
-        box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+        box-shadow: 0 4px 16px rgba(59, 130, 246, 0.15);
       }
       .hero-scroll {
         position: absolute;
@@ -392,6 +461,7 @@
         position: relative;
         overflow: hidden;
       }
+      [data-theme="light"] .scroll-line { background: var(--border-solid); }
       .scroll-line::after {
         content: "";
         position: absolute;
@@ -402,14 +472,7 @@
         background: var(--blue);
         animation: scrollLine 2s 1.5s infinite;
       }
-      @keyframes scrollLine {
-        0% {
-          left: -100%;
-        }
-        100% {
-          left: 100%;
-        }
-      }
+      @keyframes scrollLine { 0% { left: -100%; } 100% { left: 100%; } }
       .hero-stats {
         position: absolute;
         right: 60px;
@@ -420,9 +483,7 @@
         opacity: 0;
         animation: fadeLeft 0.7s 0.8s forwards;
       }
-      .stat {
-        text-align: right;
-      }
+      .stat { text-align: right; }
       .stat-num {
         font-family: var(--font-display);
         font-size: 2rem;
@@ -430,40 +491,17 @@
         color: var(--white);
         line-height: 1;
       }
-      .stat-num span {
-        color: var(--blue);
-      }
-      .stat-label {
-        font-size: 0.75rem;
-        color: var(--muted);
-        letter-spacing: 0.05em;
-      }
+      .stat-num span { color: var(--blue); }
+      .stat-label { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.05em; }
 
-      @keyframes fadeUp {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      @keyframes fadeLeft {
-        from {
-          opacity: 0;
-          transform: translateX(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateX(0);
-        }
-      }
+      @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes fadeLeft { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
 
       /* ===== SECTIONS COMMON ===== */
       section {
         padding: 100px 60px;
         position: relative;
+        transition: background 0.35s;
       }
       .section-label {
         font-family: var(--font-mono);
@@ -476,10 +514,7 @@
         align-items: center;
         gap: 10px;
       }
-      .section-label::before {
-        content: "//";
-        opacity: 0.5;
-      }
+      .section-label::before { content: "//"; opacity: 0.5; }
       .section-title {
         font-family: var(--font-display);
         font-size: clamp(2rem, 4vw, 3rem);
@@ -489,9 +524,7 @@
         line-height: 1.1;
         margin-bottom: 16px;
       }
-      .section-title .hl {
-        color: var(--blue);
-      }
+      .section-title .hl { color: var(--blue); }
       .section-sub {
         font-size: 1rem;
         color: var(--muted);
@@ -503,28 +536,15 @@
       /* ===== DIVIDER ===== */
       .divider {
         height: 1px;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          var(--border),
-          transparent
-        );
+        background: var(--border-solid);
         margin: 0 60px;
+        transition: background 0.35s;
       }
 
       /* ===== ABOUT ===== */
-      #about {
-        background: var(--bg2);
-      }
-      .about-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 80px;
-        align-items: center;
-      }
-      .about-img-wrap {
-        position: relative;
-      }
+      #about { background: var(--bg2); }
+      .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+      .about-img-wrap { position: relative; }
       .about-img-frame {
         width: 100%;
         aspect-ratio: 3/4;
@@ -532,39 +552,30 @@
         border-radius: 16px;
         overflow: hidden;
         background: var(--bg3);
-        border: 1px solid var(--border);
+        border: 1px solid var(--border-solid);
         position: relative;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.08);
       }
       .about-img-frame::before {
         content: "";
         position: absolute;
         inset: 0;
-        background: linear-gradient(
-          135deg,
-          rgba(59, 130, 246, 0.15) 0%,
-          transparent 60%
-        );
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, transparent 60%);
         z-index: 1;
       }
-      .about-avatar {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 8rem;
-        filter: grayscale(0.2);
+      [data-theme="light"] .about-img-frame::before {
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, transparent 60%);
       }
       .about-badge {
         position: absolute;
         bottom: -16px;
         right: -16px;
         background: var(--surface);
-        border: 1px solid var(--border);
+        border: 1px solid var(--border-solid);
         border-radius: 12px;
         padding: 16px 20px;
         text-align: center;
-        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
       }
       .about-badge-num {
         font-family: var(--font-display);
@@ -573,37 +584,20 @@
         color: var(--blue);
         line-height: 1;
       }
-      .about-badge-label {
-        font-size: 0.72rem;
-        color: var(--muted);
-      }
-      .about-tag-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-bottom: 28px;
-      }
+      .about-badge-label { font-size: 0.72rem; color: var(--muted); }
+      .about-tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
       .about-tag {
         font-family: var(--font-mono);
         font-size: 0.75rem;
         padding: 4px 12px;
         border-radius: 100px;
-        border: 1px solid var(--border);
+        border: 1px solid var(--border-solid);
         color: var(--blue-light);
         background: rgba(59, 130, 246, 0.05);
       }
-      .about-text {
-        font-size: 1rem;
-        color: var(--muted);
-        line-height: 1.5;
-        margin-bottom: 15px;
-        text-align: justify;
-      }
-      .tech-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 12px;
-      }
+      [data-theme="light"] .about-tag { color: var(--blue); border-color: rgba(37,99,235,0.25); background: rgba(37,99,235,0.06); }
+      .about-text { font-size: 1rem; color: var(--muted); line-height: 1.5; margin-bottom: 15px; text-align: justify; }
+      .tech-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
       .tech-chip {
         display: flex;
         flex-direction: column;
@@ -611,26 +605,24 @@
         gap: 6px;
         padding: 14px 10px;
         background: var(--bg3);
-        border: 1px solid var(--border);
+        border: 1px solid var(--border-solid);
         border-radius: 10px;
         font-family: var(--font-mono);
         font-size: 0.72rem;
         color: var(--muted);
-        transition: border-color 0.2s, color 0.2s, transform 0.2s;
+        transition: border-color 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
       }
+      [data-theme="light"] .tech-chip { background: var(--surface); }
       .tech-chip:hover {
         border-color: rgba(59, 130, 246, 0.4);
         color: var(--blue-light);
         transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(59,130,246,0.1);
       }
-      .tech-chip span {
-        font-size: 1.4rem;
-      }
+      [data-theme="light"] .tech-chip:hover { color: var(--blue); }
 
-      /* ===== MOBILE FOTO — CARD HORIZONTAL ===== */
-      .about-mobile-photo {
-        display: none; /* hidden by default, shown on tablet/mobile */
-      }
+      /* Mobile photo card */
+      .about-mobile-photo { display: none; }
       .about-mobile-photo-img {
         width: 90px;
         height: 90px;
@@ -639,23 +631,9 @@
         border: 2px solid rgba(59, 130, 246, 0.4);
         flex-shrink: 0;
       }
-      .about-mobile-photo-info {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-      }
-      .about-mobile-photo-name {
-        font-family: var(--font-display);
-        font-size: 1.15rem;
-        font-weight: 800;
-        color: var(--white);
-        letter-spacing: -0.02em;
-      }
-      .about-mobile-photo-role {
-        font-family: var(--font-mono);
-        font-size: 0.72rem;
-        color: var(--cyan);
-      }
+      .about-mobile-photo-info { display: flex; flex-direction: column; gap: 4px; }
+      .about-mobile-photo-name { font-family: var(--font-display); font-size: 1.15rem; font-weight: 800; color: var(--white); letter-spacing: -0.02em; }
+      .about-mobile-photo-role { font-family: var(--font-mono); font-size: 0.72rem; color: var(--cyan); }
       .about-mobile-photo-badge {
         margin-top: 4px;
         display: inline-block;
@@ -669,17 +647,11 @@
       }
 
       /* ===== PROJECTS ===== */
-      #projects {
-        background: var(--bg);
-      }
-      .projects-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 24px;
-      }
+      #projects { background: var(--bg); }
+      .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
       .project-card {
         background: var(--surface);
-        border: 1px solid var(--border);
+        border: 1px solid var(--border-solid);
         border-radius: 16px;
         overflow: hidden;
         transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
@@ -688,12 +660,12 @@
       .project-card:hover {
         transform: translateY(-6px);
         border-color: rgba(59, 130, 246, 0.35);
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5),
-          0 0 30px rgba(59, 130, 246, 0.08);
+        box-shadow: 0 20px 60px rgba(0,0,0,0.12), 0 0 30px rgba(59,130,246,0.08);
       }
-      .project-card.featured {
-        grid-column: span 2;
+      [data-theme="light"] .project-card:hover {
+        box-shadow: 0 20px 50px rgba(15,23,42,0.1), 0 0 0 1px rgba(37,99,235,0.08);
       }
+      .project-card.featured { grid-column: span 2; }
       .project-thumb {
         height: 180px;
         background: linear-gradient(135deg, var(--bg3) 0%, #131d35 100%);
@@ -704,64 +676,42 @@
         position: relative;
         overflow: hidden;
       }
+      [data-theme="light"] .project-thumb {
+        background: linear-gradient(135deg, var(--bg3) 0%, #dde8f7 100%);
+      }
       .project-thumb::before {
         content: "";
         position: absolute;
         inset: 0;
-        background: linear-gradient(
-          135deg,
-          rgba(59, 130, 246, 0.08) 0%,
-          transparent 60%
-        );
+        background: linear-gradient(135deg, rgba(59,130,246,0.08) 0%, transparent 60%);
       }
-      .project-card.featured .project-thumb {
-        height: 220px;
-      }
+      .project-card.featured .project-thumb { height: 220px; }
       .project-num {
         position: absolute;
         top: 16px;
         left: 16px;
         font-family: var(--font-mono);
         font-size: 0.72rem;
-        color: rgba(59, 130, 246, 0.5);
+        color: rgba(59,130,246,0.5);
+        background: rgba(255,255,255,0.1);
+        padding: 2px 8px;
+        border-radius: 4px;
       }
-      .project-body {
-        padding: 24px;
-      }
-      .project-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-        margin-bottom: 12px;
-      }
+      [data-theme="light"] .project-num { background: rgba(255,255,255,0.7); }
+      .project-body { padding: 24px; }
+      .project-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
       .project-tag {
         font-family: var(--font-mono);
         font-size: 0.68rem;
         padding: 3px 10px;
-        background: rgba(59, 130, 246, 0.08);
-        border: 1px solid rgba(59, 130, 246, 0.15);
+        background: rgba(59,130,246,0.08);
+        border: 1px solid rgba(59,130,246,0.15);
         border-radius: 100px;
         color: var(--cyan);
       }
-      .project-title {
-        font-family: var(--font-display);
-        font-size: 1.15rem;
-        font-weight: 700;
-        color: var(--white);
-        margin-bottom: 8px;
-        letter-spacing: -0.01em;
-      }
-      .project-desc {
-        font-size: 0.9rem;
-        color: var(--muted);
-        line-height: 1.7;
-        margin-bottom: 20px;
-        text-align: justify;
-      }
-      .project-links {
-        display: flex;
-        gap: 12px;
-      }
+      .project-title { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--white); margin-bottom: 8px; letter-spacing: -0.01em; }
+      .project-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.7; margin-bottom: 20px; text-align: justify; }
+      .project-links { display: flex; gap: 12px; }
       .project-link {
         display: inline-flex;
         align-items: center;
@@ -770,27 +720,22 @@
         font-size: 0.75rem;
         color: var(--blue-light);
         text-decoration: none;
-        transition: color 0.2s;
+        transition: color 0.2s, background 0.2s, border-color 0.2s;
         padding: 6px 12px;
-        border: 1px solid rgba(59, 130, 246, 0.2);
+        border: 1px solid rgba(59,130,246,0.2);
         border-radius: 6px;
-        background: rgba(59, 130, 246, 0.04);
+        background: rgba(59,130,246,0.04);
       }
+      [data-theme="light"] .project-link { color: var(--blue); }
       .project-link:hover {
-        color: var(--white);
+        color: #fff;
         border-color: var(--blue);
-        background: rgba(59, 130, 246, 0.1);
+        background: var(--blue);
       }
 
       /* ===== SKILLS ===== */
-      #skills {
-        background: var(--bg2);
-      }
-      .skills-layout {
-        display: grid;
-        grid-template-columns: 1.2fr 1fr;
-        gap: 60px;
-      }
+      #skills { background: var(--bg2); }
+      .skills-layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; }
       .skills-col-title {
         font-family: var(--font-display);
         font-size: 1.1rem;
@@ -798,33 +743,19 @@
         color: var(--white);
         margin-bottom: 28px;
         padding-bottom: 14px;
-        border-bottom: 1px solid var(--border);
+        border-bottom: 1px solid var(--border-solid);
       }
-      .skill-item {
-        margin-bottom: 22px;
-      }
-      .skill-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 8px;
-      }
-      .skill-name {
-        font-family: var(--font-mono);
-        font-size: 0.82rem;
-        color: var(--text);
-      }
-      .skill-pct {
-        font-family: var(--font-mono);
-        font-size: 0.72rem;
-        color: var(--blue);
-      }
+      .skill-item { margin-bottom: 22px; }
+      .skill-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+      .skill-name { font-family: var(--font-mono); font-size: 0.82rem; color: var(--text); }
+      .skill-pct { font-family: var(--font-mono); font-size: 0.72rem; color: var(--blue); }
       .skill-bar {
         height: 3px;
-        background: rgba(255, 255, 255, 0.05);
+        background: rgba(255,255,255,0.05);
         border-radius: 100px;
         overflow: hidden;
       }
+      [data-theme="light"] .skill-bar { background: var(--bg3); height: 4px; }
       .skill-fill {
         height: 100%;
         background: linear-gradient(90deg, var(--blue) 0%, var(--cyan) 100%);
@@ -832,46 +763,27 @@
         width: 0;
         transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
       }
-      .soft-skills-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 14px;
-      }
+      .soft-skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
       .soft-card {
         padding: 20px;
         background: var(--bg3);
-        border: 1px solid var(--border);
+        border: 1px solid var(--border-solid);
         border-radius: 12px;
-        transition: border-color 0.2s, transform 0.2s;
+        transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
       }
+      [data-theme="light"] .soft-card { background: var(--surface); }
       .soft-card:hover {
-        border-color: rgba(59, 130, 246, 0.3);
+        border-color: rgba(59,130,246,0.3);
         transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.06);
       }
-      .soft-icon {
-        font-size: 1.4rem;
-        margin-bottom: 8px;
-      }
-      .soft-name {
-        font-family: var(--font-display);
-        font-size: 0.88rem;
-        font-weight: 600;
-        color: var(--white);
-        margin-bottom: 4px;
-      }
-      .soft-desc {
-        font-size: 0.78rem;
-        color: var(--muted);
-        line-height: 1.5;
-      }
+      .soft-icon { font-size: 1.4rem; margin-bottom: 8px; }
+      .soft-name { font-family: var(--font-display); font-size: 0.88rem; font-weight: 600; color: var(--white); margin-bottom: 4px; }
+      .soft-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
 
       /* ===== EXPERIENCE ===== */
-      #experience {
-        background: var(--bg);
-      }
-      .timeline {
-        position: relative;
-      }
+      #experience { background: var(--bg); }
+      .timeline { position: relative; }
       .timeline::before {
         content: "";
         position: absolute;
@@ -880,168 +792,93 @@
         bottom: 0;
         width: 1px;
         background: linear-gradient(to bottom, var(--blue), transparent);
+        opacity: 0.6;
       }
-      .timeline-item {
-        display: grid;
-        grid-template-columns: 60px 1fr;
-        gap: 24px;
-        margin-bottom: 48px;
-      }
-      .timeline-dot {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        position: relative;
-        padding-top: 6px;
-      }
+      [data-theme="light"] .timeline::before { opacity: 0.4; }
+      .timeline-item { display: grid; grid-template-columns: 60px 1fr; gap: 24px; margin-bottom: 48px; }
+      .timeline-dot { display: flex; flex-direction: column; align-items: center; position: relative; padding-top: 6px; }
       .timeline-dot-inner {
         width: 11px;
         height: 11px;
         background: var(--blue);
         border-radius: 50%;
+        /* PERUBAHAN: border warna menyesuaikan bg section bukan hardcode */
         border: 2px solid var(--bg);
-        box-shadow: 0 0 12px rgba(59, 130, 246, 0.6);
+        box-shadow: 0 0 12px rgba(59,130,246,0.6);
         flex-shrink: 0;
       }
+      [data-theme="light"] .timeline-dot-inner { box-shadow: 0 0 0 3px rgba(37,99,235,0.2); }
       .timeline-content {
         background: var(--surface);
-        border: 1px solid var(--border);
+        border: 1px solid var(--border-solid);
         border-radius: 14px;
         padding: 24px 28px;
-        transition: border-color 0.2s, transform 0.2s;
+        transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
       }
       .timeline-content:hover {
-        border-color: rgba(59, 130, 246, 0.3);
+        border-color: rgba(59,130,246,0.3);
         transform: translateX(4px);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.06);
       }
-      .timeline-period {
-        font-family: var(--font-mono);
-        font-size: 0.72rem;
-        color: var(--blue);
-        margin-bottom: 8px;
-        letter-spacing: 0.05em;
-      }
-      .timeline-role {
-        font-family: var(--font-display);
-        font-size: 1.05rem;
-        font-weight: 700;
-        color: var(--white);
-        margin-bottom: 4px;
-      }
-      .timeline-org {
-        font-size: 0.85rem;
-        color: var(--cyan);
-        margin-bottom: 12px;
-      }
-      .timeline-desc {
-        font-size: 0.9rem;
-        color: var(--muted);
-        line-height: 1.8;
-      }
-      .timeline-badges {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-        margin-top: 14px;
-      }
+      .timeline-period { font-family: var(--font-mono); font-size: 0.72rem; color: var(--blue); margin-bottom: 8px; letter-spacing: 0.05em; }
+      .timeline-role { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+      .timeline-org { font-size: 0.85rem; color: var(--cyan); margin-bottom: 12px; }
+      .timeline-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.8; }
+      .timeline-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
       .timeline-badge {
         font-family: var(--font-mono);
         font-size: 0.68rem;
         padding: 3px 10px;
         border-radius: 100px;
-        background: rgba(59, 130, 246, 0.08);
-        border: 1px solid rgba(59, 130, 246, 0.15);
+        background: rgba(59,130,246,0.08);
+        border: 1px solid rgba(59,130,246,0.15);
         color: var(--muted);
       }
+      [data-theme="light"] .timeline-badge { background: var(--bg2); border-color: var(--border-solid); }
 
       /* ===== CONTACT ===== */
-      #contact {
-        background: var(--bg2);
-      }
-      .contact-layout {
-        display: grid;
-        grid-template-columns: 1fr 1.2fr;
-        gap: 80px;
-      }
-      .contact-info-title {
-        font-family: var(--font-display);
-        font-size: 1.5rem;
-        font-weight: 800;
-        color: var(--white);
-        margin-bottom: 16px;
-        letter-spacing: -0.02em;
-      }
-      .contact-info-desc {
-        font-size: 0.95rem;
-        color: var(--muted);
-        line-height: 1.8;
-        margin-bottom: 36px;
-      }
-      .contact-links {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-      }
+      #contact { background: var(--bg2); }
+      .contact-layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; }
+      .contact-info-title { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; color: var(--white); margin-bottom: 16px; letter-spacing: -0.02em; }
+      .contact-info-desc { font-size: 0.95rem; color: var(--muted); line-height: 1.8; margin-bottom: 36px; }
+      .contact-links { display: flex; flex-direction: column; gap: 16px; }
       .contact-link-item {
         display: flex;
         align-items: center;
         gap: 14px;
         padding: 16px 20px;
         background: var(--surface);
-        border: 1px solid var(--border);
+        border: 1px solid var(--border-solid);
         border-radius: 12px;
         text-decoration: none;
-        transition: border-color 0.2s, transform 0.2s;
+        transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
       }
       .contact-link-item:hover {
-        border-color: rgba(59, 130, 246, 0.35);
+        border-color: rgba(59,130,246,0.35);
         transform: translateX(4px);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.06);
       }
       .contact-link-icon {
         width: 36px;
         height: 36px;
         border-radius: 8px;
-        background: rgba(59, 130, 246, 0.1);
+        background: rgba(59,130,246,0.1);
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 1rem;
         flex-shrink: 0;
       }
-      .contact-link-label {
-        font-size: 0.78rem;
-        color: var(--muted);
-      }
-      .contact-link-val {
-        font-family: var(--font-mono);
-        font-size: 0.85rem;
-        color: var(--text);
-      }
-      .contact-form {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-      }
-      .form-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-      }
-      .form-group {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-      }
-      .form-label {
-        font-family: var(--font-mono);
-        font-size: 0.72rem;
-        color: var(--blue-light);
-        letter-spacing: 0.05em;
-      }
-      .form-input,
-      .form-textarea {
+      .contact-link-label { font-size: 0.78rem; color: var(--muted); }
+      .contact-link-val { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text); }
+      .contact-form { display: flex; flex-direction: column; gap: 16px; }
+      .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+      .form-group { display: flex; flex-direction: column; gap: 8px; }
+      .form-label { font-family: var(--font-mono); font-size: 0.72rem; color: var(--blue-light); letter-spacing: 0.05em; }
+      [data-theme="light"] .form-label { color: var(--blue); }
+      .form-input, .form-textarea {
         background: var(--surface);
-        border: 1px solid var(--border);
+        border: 1px solid var(--border-solid);
         border-radius: 10px;
         padding: 14px 16px;
         font-family: var(--font-body);
@@ -1051,18 +888,12 @@
         transition: border-color 0.2s, box-shadow 0.2s;
         resize: none;
       }
-      .form-input:focus,
-      .form-textarea:focus {
-        border-color: rgba(59, 130, 246, 0.5);
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.08);
+      .form-input:focus, .form-textarea:focus {
+        border-color: rgba(59,130,246,0.5);
+        box-shadow: 0 0 0 3px rgba(59,130,246,0.08);
       }
-      .form-input::placeholder,
-      .form-textarea::placeholder {
-        color: var(--muted);
-      }
-      .form-textarea {
-        height: 130px;
-      }
+      .form-input::placeholder, .form-textarea::placeholder { color: var(--muted); }
+      .form-textarea { height: 130px; }
       .form-submit {
         display: inline-flex;
         align-items: center;
@@ -1078,59 +909,41 @@
         border-radius: 10px;
         cursor: pointer;
         transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+        box-shadow: 0 4px 14px rgba(59,130,246,0.3);
       }
       .form-submit:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(59, 130, 246, 0.35);
-        background: var(--blue-light);
+        box-shadow: 0 8px 24px rgba(59,130,246,0.35);
       }
 
       /* ===== FOOTER ===== */
       footer {
         background: var(--bg);
         padding: 40px 60px;
-        border-top: 1px solid var(--border);
+        border-top: 1px solid var(--border-solid);
         display: flex;
         align-items: center;
         justify-content: space-between;
         flex-wrap: wrap;
         gap: 20px;
+        transition: background 0.35s;
       }
-      .footer-left {
-        font-family: var(--font-mono);
-        font-size: 0.78rem;
-        color: var(--muted);
-      }
-      .footer-left span {
-        color: var(--blue);
-      }
+      .footer-left { font-family: var(--font-mono); font-size: 0.78rem; color: var(--muted); }
+      .footer-left span { color: var(--blue); }
 
       /* ===== SCROLL REVEAL ===== */
       .reveal {
         opacity: 0;
         transform: translateY(28px);
-        transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-          transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
       }
-      .reveal.visible {
-        opacity: 1;
-        transform: none;
-      }
-      .reveal-delay-1 {
-        transition-delay: 0.1s;
-      }
-      .reveal-delay-2 {
-        transition-delay: 0.2s;
-      }
-      .reveal-delay-3 {
-        transition-delay: 0.3s;
-      }
-      .reveal-delay-4 {
-        transition-delay: 0.4s;
-      }
+      .reveal.visible { opacity: 1; transform: none; }
+      .reveal-delay-1 { transition-delay: 0.1s; }
+      .reveal-delay-2 { transition-delay: 0.2s; }
+      .reveal-delay-3 { transition-delay: 0.3s; }
+      .reveal-delay-4 { transition-delay: 0.4s; }
 
-      /* ===== MOBILE MENU — SLIDE FROM RIGHT ===== */
-      /* Backdrop */
+      /* ===== MOBILE BACKDROP ===== */
       .mobile-backdrop {
         display: none;
         position: fixed;
@@ -1141,36 +954,27 @@
         opacity: 0;
         transition: opacity 0.3s ease;
       }
-      .mobile-backdrop.open {
-        display: block;
-        opacity: 1;
-      }
+      [data-theme="light"] .mobile-backdrop { background: rgba(15, 23, 42, 0.4); }
+      .mobile-backdrop.open { display: block; opacity: 1; }
 
-      /* Drawer panel */
+      /* ===== MOBILE MENU DRAWER ===== */
       .mobile-menu {
         position: fixed;
         top: 0;
         right: 0;
         bottom: 0;
         width: min(320px, 85vw);
-        background: var(--bg2);
-        border-left: 1px solid var(--border);
+        /* PERUBAHAN: warna drawer dari variabel */
+        background: var(--mobile-menu-bg);
+        border-left: 1px solid var(--border-solid);
         z-index: 160;
         display: flex;
         flex-direction: column;
         padding: 80px 32px 40px;
-        gap: 0;
         transform: translateX(100%);
-        transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), background 0.35s;
       }
-      .mobile-menu.open {
-        transform: translateX(0);
-      }
-
-      /* Menu items */
-      .mobile-menu nav-item {
-        display: block;
-      }
+      .mobile-menu.open { transform: translateX(0); }
       .mobile-menu a {
         display: flex;
         align-items: center;
@@ -1181,9 +985,8 @@
         color: var(--muted);
         text-decoration: none;
         padding: 16px 0;
-        border-bottom: 1px solid var(--border);
+        border-bottom: 1px solid var(--border-solid);
         transition: color 0.2s, padding-left 0.2s;
-        position: relative;
       }
       .mobile-menu a .menu-num {
         font-family: var(--font-mono);
@@ -1192,25 +995,9 @@
         opacity: 0.7;
         min-width: 24px;
       }
-      .mobile-menu a:last-of-type {
-        border-bottom: none;
-      }
-      .mobile-menu a:hover,
-      .mobile-menu a:active {
-        color: var(--white);
-        padding-left: 8px;
-      }
-      .mobile-menu a:hover .menu-num {
-        opacity: 1;
-      }
-
-      /* Social row at bottom of drawer */
-      .mobile-socials {
-        margin-top: auto;
-        padding-top: 32px;
-        display: flex;
-        gap: 12px;
-      }
+      .mobile-menu a:last-of-type { border-bottom: none; }
+      .mobile-menu a:hover, .mobile-menu a:active { color: var(--white); padding-left: 8px; }
+      .mobile-socials { margin-top: auto; padding-top: 32px; display: flex; gap: 12px; }
       .mobile-social-btn {
         flex: 1;
         display: flex;
@@ -1218,7 +1005,7 @@
         justify-content: center;
         padding: 12px;
         background: var(--surface);
-        border: 1px solid var(--border);
+        border: 1px solid var(--border-solid);
         border-radius: 10px;
         text-decoration: none;
         color: var(--muted);
@@ -1226,105 +1013,53 @@
         font-family: var(--font-mono);
         transition: border-color 0.2s, color 0.2s;
       }
-      .mobile-social-btn:hover {
-        border-color: rgba(59, 130, 246, 0.4);
-        color: var(--blue-light);
+      .mobile-social-btn:hover { border-color: rgba(59,130,246,0.4); color: var(--blue-light); }
+
+      /* ===== GITHUB ICON LIGHT MODE ===== */
+      /* PERUBAHAN: ikon github di contact perlu diinvert di light mode agar tidak hilang */
+      .github-icon {
+        filter: var(--github-filter, none);
       }
 
       /* ===== RESPONSIVE ===== */
       @media (max-width: 1024px) {
-        .about-grid {
-          grid-template-columns: 1fr;
-        }
-        /* Desktop photo hidden on tablet/mobile — shown via mobile card instead */
-        .about-img-wrap {
-          display: none;
-        }
-        /* Tampilkan mobile photo card mulai dari tablet */
+        .about-grid { grid-template-columns: 1fr; }
+        .about-img-wrap { display: none; }
         .about-mobile-photo {
           display: flex !important;
           align-items: center;
           gap: 20px;
           background: var(--surface);
-          border: 1px solid var(--border);
+          border: 1px solid var(--border-solid);
           border-radius: 16px;
           padding: 20px;
           margin-bottom: 32px;
           opacity: 1 !important;
           transform: none !important;
         }
-        .projects-grid {
-          grid-template-columns: 1fr 1fr;
-        }
-        .project-card.featured {
-          grid-column: span 2;
-        }
-        .skills-layout {
-          grid-template-columns: 1fr;
-        }
-        .contact-layout {
-          grid-template-columns: 1fr;
-        }
+        .projects-grid { grid-template-columns: 1fr 1fr; }
+        .project-card.featured { grid-column: span 2; }
+        .skills-layout { grid-template-columns: 1fr; }
+        .contact-layout { grid-template-columns: 1fr; }
       }
-
       @media (max-width: 768px) {
-        nav {
-          padding: 16px 24px;
-        }
-        nav.scrolled {
-          padding: 12px 24px;
-        }
-        .nav-links {
-          display: none;
-        }
-        .hamburger {
-          display: flex;
-        }
-
-        section {
-          padding: 70px 24px;
-        }
-        #hero {
-          padding: 110px 24px 80px;
-        }
-        .hero-stats {
-          display: none;
-        }
-        .hero-scroll {
-          left: 24px;
-        }
-
-        /* ===== MOBILE FOTO — ukuran lebih compact di HP ===== */
-        .about-mobile-photo {
-          padding: 16px;
-          gap: 16px;
-        }
-        .about-mobile-photo-img {
-          width: 72px;
-          height: 72px;
-        }
-
-        .projects-grid {
-          grid-template-columns: 1fr;
-        }
-        .project-card.featured {
-          grid-column: span 1;
-        }
-        .form-row {
-          grid-template-columns: 1fr;
-        }
-        .tech-grid {
-          grid-template-columns: repeat(3, 1fr);
-        }
-        .divider {
-          margin: 0 24px;
-        }
-        footer {
-          padding: 30px 24px;
-        }
-        .soft-skills-grid {
-          grid-template-columns: 1fr;
-        }
+        nav { padding: 16px 24px; }
+        nav.scrolled { padding: 12px 24px; }
+        .nav-links { display: none; }
+        .hamburger { display: flex; }
+        section { padding: 70px 24px; }
+        #hero { padding: 110px 24px 80px; }
+        .hero-stats { display: none; }
+        .hero-scroll { left: 24px; }
+        .about-mobile-photo { padding: 16px; gap: 16px; }
+        .about-mobile-photo-img { width: 72px; height: 72px; }
+        .projects-grid { grid-template-columns: 1fr; }
+        .project-card.featured { grid-column: span 1; }
+        .form-row { grid-template-columns: 1fr; }
+        .tech-grid { grid-template-columns: repeat(3, 1fr); }
+        .divider { margin: 0 24px; }
+        footer { padding: 30px 24px; }
+        .soft-skills-grid { grid-template-columns: 1fr; }
       }
     </style>
   </head>
@@ -1343,8 +1078,23 @@
         <li><a href="#experience">experience</a></li>
         <li><a href="#contact">contact</a></li>
       </ul>
-      <div class="hamburger" id="hamburger">
-        <span></span><span></span><span></span>
+
+      <!-- PERUBAHAN 2: Nav kanan — toggle + hamburger dibungkus .nav-right -->
+      <div class="nav-right">
+        <button
+          class="theme-toggle"
+          id="themeToggle"
+          data-tip="Switch theme"
+          aria-label="Toggle theme"
+        >
+          <!-- Ikon bulan — tampil saat dark mode -->
+          <span class="icon-dark">🌙</span>
+          <!-- Ikon matahari — tampil saat light mode -->
+          <span class="icon-light">☀️</span>
+        </button>
+        <div class="hamburger" id="hamburger">
+          <span></span><span></span><span></span>
+        </div>
       </div>
     </nav>
 
@@ -1353,38 +1103,15 @@
 
     <!-- MOBILE MENU DRAWER -->
     <div class="mobile-menu" id="mobileMenu">
-      <a href="#about" onclick="closeMobile()">
-        <span class="menu-num">01</span>About
-      </a>
-      <a href="#projects" onclick="closeMobile()">
-        <span class="menu-num">02</span>Projects
-      </a>
-      <a href="#skills" onclick="closeMobile()">
-        <span class="menu-num">03</span>Skills
-      </a>
-      <a href="#experience" onclick="closeMobile()">
-        <span class="menu-num">04</span>Experience
-      </a>
-      <a href="#contact" onclick="closeMobile()">
-        <span class="menu-num">05</span>Contact
-      </a>
-
+      <a href="#about" onclick="closeMobile()"><span class="menu-num">01</span>About</a>
+      <a href="#projects" onclick="closeMobile()"><span class="menu-num">02</span>Projects</a>
+      <a href="#skills" onclick="closeMobile()"><span class="menu-num">03</span>Skills</a>
+      <a href="#experience" onclick="closeMobile()"><span class="menu-num">04</span>Experience</a>
+      <a href="#contact" onclick="closeMobile()"><span class="menu-num">05</span>Contact</a>
       <div class="mobile-socials">
-        <a
-          href="https://github.com/AditiaPutra16"
-          target="_blank"
-          class="mobile-social-btn"
-          >GitHub</a
-        >
-        <a
-          href="https://www.linkedin.com/in/aditia-putra-41a579279/"
-          target="_blank"
-          class="mobile-social-btn"
-          >LinkedIn</a
-        >
-        <a href="mailto:aditiaputra6907@gmail.com" class="mobile-social-btn"
-          >Email</a
-        >
+        <a href="https://github.com/AditiaPutra16" target="_blank" class="mobile-social-btn">GitHub</a>
+        <a href="https://www.linkedin.com/in/aditia-putra-41a579279/" target="_blank" class="mobile-social-btn">LinkedIn</a>
+        <a href="mailto:aditiaputra6907@gmail.com" class="mobile-social-btn">Email</a>
       </div>
     </div>
 
@@ -1396,47 +1123,22 @@
       <div class="hero-content">
         <div class="hero-tag">Available for opportunities</div>
         <h1 class="hero-name">Aditia<br /><span class="accent">Putra</span></h1>
-        <p class="hero-headline">
-          // Web Developer &nbsp;·&nbsp; Data Science Enthusiast &nbsp;·&nbsp;
-          Tech Explorer
-        </p>
+        <p class="hero-headline">// Web Developer &nbsp;·&nbsp; Data Science Enthusiast &nbsp;·&nbsp; Tech Explorer</p>
         <p class="hero-desc">
-          Lulusan baru Teknik Informatika yang passionate dalam membangun
-          pengalaman digital yang bermakna. Saya percaya kode yang baik bukan
-          hanya bekerja — ia juga bercerita.
+          Lulusan baru Teknik Informatika yang passionate dalam membangun pengalaman digital yang bermakna. Saya percaya kode yang baik bukan hanya bekerja — ia juga bercerita.
         </p>
         <div class="hero-btns">
-          <a
-            href="file/ADITIA_PUTRA_CV.pdf"
-            download="ADITIA_PUTRA_CV.pdf"
-            class="btn-primary"
-          >
-            <svg
-              width="15"
-              height="15"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.5"
-            >
-              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
-              <polyline points="7 10 12 15 17 10" />
-              <line x1="12" y1="15" x2="12" y2="3" />
+          <a href="file/ADITIA_PUTRA_CV.pdf" download="ADITIA_PUTRA_CV.pdf" class="btn-primary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
             </svg>
             Download CV
           </a>
           <a href="#contact" class="btn-outline">
-            <svg
-              width="15"
-              height="15"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.5"
-            >
-              <path
-                d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"
-              />
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
             </svg>
             Contact Me
           </a>
@@ -1463,49 +1165,26 @@
     <!-- ===== ABOUT ===== -->
     <section id="about">
       <div class="about-grid">
-        <!-- Desktop photo (hidden on mobile via CSS) -->
         <div class="about-img-wrap">
           <div class="about-img-frame">
-            <img
-              src="file/foto.JPG"
-              alt="Foto Adit"
-              style="
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                display: block;
-              "
-            />
+            <img src="file/foto.JPG" alt="Foto Adit" style="width:100%;height:100%;object-fit:cover;display:block;" />
           </div>
           <div class="about-badge">
             <div class="about-badge-num">S.Kom</div>
             <div class="about-badge-label">Fresh Graduate</div>
           </div>
         </div>
-
         <div>
-          <!-- Mobile photo card (hidden on desktop, shown on mobile) -->
           <div class="about-mobile-photo">
-            <img
-              src="file/foto.JPG"
-              alt="Foto Aditia Putra"
-              class="about-mobile-photo-img"
-            />
+            <img src="file/foto.JPG" alt="Foto Aditia Putra" class="about-mobile-photo-img" />
             <div class="about-mobile-photo-info">
               <div class="about-mobile-photo-name">Aditia Putra</div>
-              <div class="about-mobile-photo-role">
-                // Full Stack · Data Science
-              </div>
-              <span class="about-mobile-photo-badge"
-                >S.Kom · Fresh Graduate</span
-              >
+              <div class="about-mobile-photo-role">// Full Stack · Data Science</div>
+              <span class="about-mobile-photo-badge">S.Kom · Fresh Graduate</span>
             </div>
           </div>
-
           <p class="section-label reveal">About Me</p>
-          <h2 class="section-title reveal reveal-delay-1">
-            Mengenal <span class="hl">Lebih Dekat</span>
-          </h2>
+          <h2 class="section-title reveal reveal-delay-1">Mengenal <span class="hl">Lebih Dekat</span></h2>
           <div class="about-tag-row reveal reveal-delay-2">
             <span class="about-tag">Informatika '22</span>
             <span class="about-tag">West Java</span>
@@ -1513,82 +1192,21 @@
             <span class="about-tag">Open to Work</span>
           </div>
           <p class="about-text reveal reveal-delay-2">
-            Halo! Saya lulusan baru jurusan Informatika di Universitas Al Azhar
-            Indonesia dengan minat di bidang Full Stack Developer dan Data
-            Science. Melalui pengalaman magang sebagai full-stack developer,
-            saya memperoleh kesempatan untuk terlibat langsung dalam
-            pengembangan sistem serta mengasah keterampilan teknis dan analitis
-            secara mendalam. Selain itu, partisipasi saya dalam berbagai proyek
-            kursus, bootcamp, dan kompetisi di bidang data semakin memperkuat
-            kemampuan saya dalam mengolah dan menganalisis data.
+            Halo! Saya lulusan baru jurusan Informatika di Universitas Al Azhar Indonesia dengan minat di bidang Full Stack Developer dan Data Science. Melalui pengalaman magang sebagai full-stack developer, saya memperoleh kesempatan untuk terlibat langsung dalam pengembangan sistem serta mengasah keterampilan teknis dan analitis secara mendalam. Selain itu, partisipasi saya dalam berbagai proyek kursus, bootcamp, dan kompetisi di bidang data semakin memperkuat kemampuan saya dalam mengolah dan menganalisis data.
           </p>
           <p class="about-text reveal reveal-delay-3">
-            Saya percaya bahwa kombinasi antara soft skill dan hard skill yang
-            saya miliki dapat menjadi aset yang berharga bagi perusahaan.
+            Saya percaya bahwa kombinasi antara soft skill dan hard skill yang saya miliki dapat menjadi aset yang berharga bagi perusahaan.
           </p>
-          <p
-            class="section-label reveal reveal-delay-3"
-            style="margin-top: 32px"
-          >
-            Tech Stack
-          </p>
+          <p class="section-label reveal reveal-delay-3" style="margin-top:32px">Tech Stack</p>
           <div class="tech-grid reveal reveal-delay-4">
-            <div class="tech-chip">
-              <img
-                src="https://cdn.simpleicons.org/html5/E34F26"
-                width="20"
-                height="20"
-              />HTML/CSS
-            </div>
-            <div class="tech-chip">
-              <img
-                src="https://cdn.simpleicons.org/javascript/F7DF1E"
-                width="20"
-                height="20"
-              />JavaScript
-            </div>
-            <div class="tech-chip">
-              <img
-                src="https://cdn.simpleicons.org/php/777BB4"
-                width="20"
-                height="20"
-              />PHP
-            </div>
-            <div class="tech-chip">
-              <img
-                src="https://cdn.simpleicons.org/mysql/4479A1"
-                width="20"
-                height="20"
-              />MySQL
-            </div>
-            <div class="tech-chip">
-              <img
-                src="https://cdn.simpleicons.org/codeigniter/EF4223"
-                width="20"
-                height="20"
-              />CodeIgniter 3
-            </div>
-            <div class="tech-chip">
-              <img
-                src="https://cdn.simpleicons.org/laravel/FF2D20"
-                width="20"
-                height="20"
-              />Laravel
-            </div>
-            <div class="tech-chip">
-              <img
-                src="https://cdn.simpleicons.org/git/F05032"
-                width="20"
-                height="20"
-              />Git
-            </div>
-            <div class="tech-chip">
-              <img
-                src="https://cdn.simpleicons.org/figma/F24E1E"
-                width="20"
-                height="20"
-              />Figma
-            </div>
+            <div class="tech-chip"><img src="https://cdn.simpleicons.org/html5/E34F26" width="20" height="20" />HTML/CSS</div>
+            <div class="tech-chip"><img src="https://cdn.simpleicons.org/javascript/F7DF1E" width="20" height="20" />JavaScript</div>
+            <div class="tech-chip"><img src="https://cdn.simpleicons.org/php/777BB4" width="20" height="20" />PHP</div>
+            <div class="tech-chip"><img src="https://cdn.simpleicons.org/mysql/4479A1" width="20" height="20" />MySQL</div>
+            <div class="tech-chip"><img src="https://cdn.simpleicons.org/codeigniter/EF4223" width="20" height="20" />CodeIgniter 3</div>
+            <div class="tech-chip"><img src="https://cdn.simpleicons.org/laravel/FF2D20" width="20" height="20" />Laravel</div>
+            <div class="tech-chip"><img src="https://cdn.simpleicons.org/git/F05032" width="20" height="20" />Git</div>
+            <div class="tech-chip"><img src="https://cdn.simpleicons.org/figma/F24E1E" width="20" height="20" />Figma</div>
           </div>
         </div>
       </div>
@@ -1600,562 +1218,131 @@
     <section id="projects">
       <p class="section-label reveal">Portfolio</p>
       <h2 class="section-title reveal reveal-delay-1">Project</h2>
-      <p class="section-sub reveal reveal-delay-2">
-        Kumpulan karya yang mencerminkan kemampuan teknis dan kreativitas saya
-        dalam membangun solusi digital.
-      </p>
-
+      <p class="section-sub reveal reveal-delay-2">Kumpulan karya yang mencerminkan kemampuan teknis dan kreativitas saya dalam membangun solusi digital.</p>
       <div class="projects-grid">
+
+        <!-- Project 1 -->
         <div class="project-card reveal reveal-delay-1">
-          <div
-            class="project-thumb"
-            style="position: relative; overflow: hidden; padding: 0"
-          >
-            <div
-              class="slideshow"
-              style="width: 100%; height: 100%; position: relative"
-            >
-              <img
-                src="file/perpus3.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 1;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/perpus.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/perpus2.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
+          <div class="project-thumb" style="position:relative;overflow:hidden;padding:0">
+            <div class="slideshow" style="width:100%;height:100%;position:relative">
+              <img src="file/perpus3.png" class="slide-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:1;transition:opacity 0.8s ease" />
+              <img src="file/perpus.png" class="slide-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.8s ease" />
+              <img src="file/perpus2.png" class="slide-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.8s ease" />
             </div>
             <span class="project-num">01</span>
           </div>
           <div class="project-body">
-            <div class="project-tags">
-              <span class="project-tag">PHP</span>
-              <span class="project-tag">MySQL</span>
-              <span class="project-tag">Laravel</span>
-            </div>
+            <div class="project-tags"><span class="project-tag">PHP</span><span class="project-tag">MySQL</span><span class="project-tag">Laravel</span></div>
             <h3 class="project-title">Sistem Perpustakaan</h3>
-            <p class="project-desc">
-              Sistem Perpustakaan merupakan aplikasi berbasis web yang dirancang
-              untuk mengelola seluruh aktivitas operasional perpustakaan secara
-              terintegrasi. Sistem ini mencakup pengelolaan data buku, anggota,
-              serta proses peminjaman dan pengembalian.
-            </p>
-            <div class="project-links">
-              <a
-                href="https://github.com/AditiaPutra16/book_rentt"
-                class="project-link"
-                >GitHub</a
-              >
-            </div>
+            <p class="project-desc">Sistem Perpustakaan merupakan aplikasi berbasis web yang dirancang untuk mengelola seluruh aktivitas operasional perpustakaan secara terintegrasi. Sistem ini mencakup pengelolaan data buku, anggota, serta proses peminjaman dan pengembalian.</p>
+            <div class="project-links"><a href="https://github.com/AditiaPutra16/book_rentt" class="project-link">GitHub</a></div>
           </div>
         </div>
 
+        <!-- Project 2 -->
         <div class="project-card reveal reveal-delay-1">
           <div class="project-thumb">
-            <img
-              src="file/kekom.png"
-              alt="Enkripsi"
-              style="
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                display: block;
-              "
-            />
+            <img src="file/kekom.png" alt="Enkripsi" style="width:100%;height:100%;object-fit:cover;display:block" />
             <span class="project-num">02</span>
           </div>
           <div class="project-body">
-            <div class="project-tags">
-              <span class="project-tag">Java</span>
-              <span class="project-tag">HTML/CSS</span>
-              <span class="project-tag">Encryption</span>
-              <span class="project-tag">Decryption</span>
-            </div>
+            <div class="project-tags"><span class="project-tag">Java</span><span class="project-tag">HTML/CSS</span><span class="project-tag">Encryption</span><span class="project-tag">Decryption</span></div>
             <h3 class="project-title">File Encryption & Decryption</h3>
-            <p class="project-desc">
-              File Encryption & Decryption with RSA Key merupakan aplikasi yang
-              dirancang untuk mengamankan file dengan menggunakan algoritma
-              kriptografi RSA. Sistem ini memungkinkan enkripsi dan dekripsi
-              file untuk menjaga kerahasiaan informasi.
-            </p>
-            <div class="project-links">
-              <a
-                href="https://github.com/AditiaPutra16/Hybrid-Cryptography-AES-RSA/tree/main/Final_Kekom"
-                class="project-link"
-                >GitHub</a
-              >
-            </div>
+            <p class="project-desc">File Encryption & Decryption with RSA Key merupakan aplikasi yang dirancang untuk mengamankan file dengan menggunakan algoritma kriptografi RSA. Sistem ini memungkinkan enkripsi dan dekripsi file untuk menjaga kerahasiaan informasi.</p>
+            <div class="project-links"><a href="https://github.com/AditiaPutra16/Hybrid-Cryptography-AES-RSA/tree/main/Final_Kekom" class="project-link">GitHub</a></div>
           </div>
         </div>
 
+        <!-- Project 3 -->
         <div class="project-card reveal reveal-delay-1">
           <div class="project-thumb">
-            <img
-              src="file/cuaca2.png"
-              alt="Weather"
-              style="
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                display: block;
-              "
-            />
+            <img src="file/cuaca2.png" alt="Weather" style="width:100%;height:100%;object-fit:cover;display:block" />
             <span class="project-num">03</span>
           </div>
           <div class="project-body">
-            <div class="project-tags">
-              <span class="project-tag">Java</span>
-              <span class="project-tag">API</span>
-              <span class="project-tag">Android Studio</span>
-            </div>
+            <div class="project-tags"><span class="project-tag">Java</span><span class="project-tag">API</span><span class="project-tag">Android Studio</span></div>
             <h3 class="project-title">Real Time Weather</h3>
-            <p class="project-desc">
-              Real Time Weather merupakan aplikasi android yang menampilkan
-              informasi cuaca secara real-time berdasarkan lokasi yang dicari,
-              termasuk prediksi cuaca 7 hari ke depan menggunakan integrasi API
-              cuaca.
-            </p>
-            <div class="project-links">
-              <a
-                href="https://github.com/AditiaPutra16/AplikasiCuaca"
-                class="project-link"
-                >GitHub</a
-              >
-            </div>
+            <p class="project-desc">Real Time Weather merupakan aplikasi android yang menampilkan informasi cuaca secara real-time berdasarkan lokasi yang dicari, termasuk prediksi cuaca 7 hari ke depan menggunakan integrasi API cuaca.</p>
+            <div class="project-links"><a href="https://github.com/AditiaPutra16/AplikasiCuaca" class="project-link">GitHub</a></div>
           </div>
         </div>
 
+        <!-- Project 4 -->
         <div class="project-card reveal reveal-delay-1">
-          <div
-            class="project-thumb"
-            style="position: relative; overflow: hidden; padding: 0"
-          >
-            <div
-              class="slideshow"
-              style="width: 100%; height: 100%; position: relative"
-            >
-              <img
-                src="file/ringkasan.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 1;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/ringkasan2.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
+          <div class="project-thumb" style="position:relative;overflow:hidden;padding:0">
+            <div class="slideshow" style="width:100%;height:100%;position:relative">
+              <img src="file/ringkasan.png" class="slide-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:1;transition:opacity 0.8s ease" />
+              <img src="file/ringkasan2.png" class="slide-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.8s ease" />
             </div>
             <span class="project-num">04</span>
           </div>
           <div class="project-body">
-            <div class="project-tags">
-              <span class="project-tag">Python</span>
-              <span class="project-tag">NLP</span>
-              <span class="project-tag">Machine Learning</span>
-            </div>
+            <div class="project-tags"><span class="project-tag">Python</span><span class="project-tag">NLP</span><span class="project-tag">Machine Learning</span></div>
             <h3 class="project-title">Text Summarization Sundanese</h3>
-            <p class="project-desc">
-              Sistem berbasis NLP yang menghasilkan ringkasan teks berbahasa
-              Sunda secara otomatis menggunakan metode extractive summarization,
-              mempertahankan makna utama dari teks asli.
-            </p>
-            <div class="project-links">
-              <a
-                href="https://github.com/AditiaPutra16/Text-Summarization-Sundanese-Language"
-                class="project-link"
-                >GitHub</a
-              >
-            </div>
+            <p class="project-desc">Sistem berbasis NLP yang menghasilkan ringkasan teks berbahasa Sunda secara otomatis menggunakan metode extractive summarization, mempertahankan makna utama dari teks asli.</p>
+            <div class="project-links"><a href="https://github.com/AditiaPutra16/Text-Summarization-Sundanese-Language" class="project-link">GitHub</a></div>
           </div>
         </div>
 
+        <!-- Project 5 -->
         <div class="project-card reveal reveal-delay-1">
-          <div
-            class="project-thumb"
-            style="position: relative; overflow: hidden; padding: 0"
-          >
-            <div
-              class="slideshow"
-              style="width: 100%; height: 100%; position: relative"
-            >
-              <img
-                src="file/qms1.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 1;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/qms_sidebar.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/qms_dash.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/qms_sys.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/qms_bulk.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/qms_ins.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/qms_create.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/qms_input.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/qms_chart.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
+          <div class="project-thumb" style="position:relative;overflow:hidden;padding:0">
+            <div class="slideshow" style="width:100%;height:100%;position:relative">
+              <img src="file/qms1.png" class="slide-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:1;transition:opacity 0.8s ease" />
+              <img src="file/qms_sidebar.png" class="slide-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.8s ease" />
+              <img src="file/qms_dash.png" class="slide-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.8s ease" />
+              <img src="file/qms_sys.png" class="slide-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.8s ease" />
+              <img src="file/qms_bulk.png" class="slide-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.8s ease" />
+              <img src="file/qms_ins.png" class="slide-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.8s ease" />
+              <img src="file/qms_create.png" class="slide-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.8s ease" />
+              <img src="file/qms_input.png" class="slide-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.8s ease" />
+              <img src="file/qms_chart.png" class="slide-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.8s ease" />
             </div>
             <span class="project-num">05</span>
           </div>
           <div class="project-body">
-            <div class="project-tags">
-              <span class="project-tag">PHP</span>
-              <span class="project-tag">JavaScript</span>
-              <span class="project-tag">HTML / CSS</span>
-              <span class="project-tag">SQL Server</span>
-              <span class="project-tag">CI3</span>
-              <span class="project-tag">Agile</span>
-            </div>
+            <div class="project-tags"><span class="project-tag">PHP</span><span class="project-tag">JavaScript</span><span class="project-tag">HTML / CSS</span><span class="project-tag">SQL Server</span><span class="project-tag">CI3</span><span class="project-tag">Agile</span></div>
             <h3 class="project-title">Quality Management System</h3>
-            <p class="project-desc">
-              Quality Management System (QMS) adalah sistem terintegrasi untuk
-              mengelola kualitas produk, memastikan setiap aktivitas operasional
-              berjalan sesuai standar yang ditetapkan secara konsisten.
-            </p>
+            <p class="project-desc">Quality Management System (QMS) adalah sistem terintegrasi untuk mengelola kualitas produk, memastikan setiap aktivitas operasional berjalan sesuai standar yang ditetapkan secara konsisten.</p>
           </div>
         </div>
 
+        <!-- Project 6 -->
         <div class="project-card reveal reveal-delay-1">
-          <div
-            class="project-thumb"
-            style="position: relative; overflow: hidden; padding: 0"
-          >
-            <div
-              class="slideshow"
-              style="width: 100%; height: 100%; position: relative"
-            >
-              <img
-                src="file/qms1.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 1;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/kento_sidebar.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/kento_matdel.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/kento.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/kento_report.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/psa.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/psa_report.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
+          <div class="project-thumb" style="position:relative;overflow:hidden;padding:0">
+            <div class="slideshow" style="width:100%;height:100%;position:relative">
+              <img src="file/qms1.png" class="slide-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:1;transition:opacity 0.8s ease" />
+              <img src="file/kento_sidebar.png" class="slide-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.8s ease" />
+              <img src="file/kento_matdel.png" class="slide-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.8s ease" />
+              <img src="file/kento.png" class="slide-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.8s ease" />
+              <img src="file/kento_report.png" class="slide-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.8s ease" />
+              <img src="file/psa.png" class="slide-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.8s ease" />
+              <img src="file/psa_report.png" class="slide-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.8s ease" />
             </div>
             <span class="project-num">06</span>
           </div>
           <div class="project-body">
-            <div class="project-tags">
-              <span class="project-tag">PHP</span>
-              <span class="project-tag">JavaScript</span>
-              <span class="project-tag">HTML / CSS</span>
-              <span class="project-tag">SQL Server</span>
-              <span class="project-tag">CI3</span>
-              <span class="project-tag">Agile</span>
-            </div>
+            <div class="project-tags"><span class="project-tag">PHP</span><span class="project-tag">JavaScript</span><span class="project-tag">HTML / CSS</span><span class="project-tag">SQL Server</span><span class="project-tag">CI3</span><span class="project-tag">Agile</span></div>
             <h3 class="project-title">Digi-Kentokai</h3>
-            <p class="project-desc">
-              Sistem digital untuk mendukung proses audit pada area packaging
-              melalui checklist terstandarisasi, memungkinkan pencatatan
-              real-time dan meningkatkan transparansi evaluasi kepatuhan standar
-              packaging.
-            </p>
+            <p class="project-desc">Sistem digital untuk mendukung proses audit pada area packaging melalui checklist terstandarisasi, memungkinkan pencatatan real-time dan meningkatkan transparansi evaluasi kepatuhan standar packaging.</p>
           </div>
         </div>
 
+        <!-- Project 7 -->
         <div class="project-card reveal reveal-delay-1">
-          <div
-            class="project-thumb"
-            style="position: relative; overflow: hidden; padding: 0"
-          >
-            <div
-              class="slideshow"
-              style="width: 100%; height: 100%; position: relative"
-            >
-              <img
-                src="file/painee.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 1;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/painee1.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              /> 
-              <img
-                src="file/painee2.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />              
+          <div class="project-thumb" style="position:relative;overflow:hidden;padding:0">
+            <div class="slideshow" style="width:100%;height:100%;position:relative">
+              <img src="file/painee.png" class="slide-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:1;transition:opacity 0.8s ease" />
+              <img src="file/painee1.png" class="slide-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.8s ease" />
+              <img src="file/painee2.png" class="slide-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.8s ease" />
             </div>
             <span class="project-num">07</span>
           </div>
           <div class="project-body">
-            <div class="project-tags">
-              <span class="project-tag">PHP</span>
-              <span class="project-tag">HTML / CSS</span>
-              <span class="project-tag">Bootstrap</span>              
-              <span class="project-tag">MySQL</span>
-              <span class="project-tag">Laravel</span>              
-            </div>
+            <div class="project-tags"><span class="project-tag">PHP</span><span class="project-tag">HTML / CSS</span><span class="project-tag">Bootstrap</span><span class="project-tag">MySQL</span><span class="project-tag">Laravel</span></div>
             <h3 class="project-title">Painee Bakery</h3>
-            <p class="project-desc">
-              Painee Bakery adalah sebuah aplikasi web untuk katalog usaha cheesecake. Project ini menampilkan antarmuka yang user-friendly 
-              untuk pelanggan melihat menu cheesecake, serta menyediakan backend sederhana 
-              untuk admin mengelola produk. Project ini bertujuan untuk memudahkan pelanggan melihat menu cheesecake.
-            </p>
-            <div class="project-links">
-              <a
-                href="https://github.com/AditiaPutra16/Painee-bakery"
-                class="project-link"
-                >GitHub</a
-              >
-            </div>
+            <p class="project-desc">Painee Bakery adalah sebuah aplikasi web untuk katalog usaha cheesecake. Project ini menampilkan antarmuka yang user-friendly untuk pelanggan melihat menu cheesecake, serta menyediakan backend sederhana untuk admin mengelola produk.</p>
+            <div class="project-links"><a href="https://github.com/AditiaPutra16/Painee-bakery" class="project-link">GitHub</a></div>
           </div>
         </div>
 
@@ -2167,159 +1354,31 @@
     <!-- ===== SKILLS ===== -->
     <section id="skills">
       <p class="section-label reveal">Keahlian</p>
-      <h2 class="section-title reveal reveal-delay-1">
-        Skills & <span class="hl">Kemampuan</span>
-      </h2>
-      <p class="section-sub reveal reveal-delay-2">
-        Kombinasi kemampuan teknis dan interpersonal yang saya kembangkan selama
-        masa studi.
-      </p>
-
+      <h2 class="section-title reveal reveal-delay-1">Skills & <span class="hl">Kemampuan</span></h2>
+      <p class="section-sub reveal reveal-delay-2">Kombinasi kemampuan teknis dan interpersonal yang saya kembangkan selama masa studi.</p>
       <div class="skills-layout">
         <div class="reveal">
           <div class="skills-col-title">⚙️ Hard Skills</div>
-          <div class="skill-item">
-            <div class="skill-row">
-              <span class="skill-name">HTML & CSS</span
-              ><span class="skill-pct">90%</span>
-            </div>
-            <div class="skill-bar">
-              <div class="skill-fill" data-w="90"></div>
-            </div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-row">
-              <span class="skill-name">JavaScript</span
-              ><span class="skill-pct">75%</span>
-            </div>
-            <div class="skill-bar">
-              <div class="skill-fill" data-w="75"></div>
-            </div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-row">
-              <span class="skill-name">PHP</span
-              ><span class="skill-pct">75%</span>
-            </div>
-            <div class="skill-bar">
-              <div class="skill-fill" data-w="75"></div>
-            </div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-row">
-              <span class="skill-name">C/C++</span
-              ><span class="skill-pct">65%</span>
-            </div>
-            <div class="skill-bar">
-              <div class="skill-fill" data-w="65"></div>
-            </div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-row">
-              <span class="skill-name">Python</span
-              ><span class="skill-pct">70%</span>
-            </div>
-            <div class="skill-bar">
-              <div class="skill-fill" data-w="70"></div>
-            </div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-row">
-              <span class="skill-name">MySQL & Database</span
-              ><span class="skill-pct">85%</span>
-            </div>
-            <div class="skill-bar">
-              <div class="skill-fill" data-w="85"></div>
-            </div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-row">
-              <span class="skill-name">Laravel</span
-              ><span class="skill-pct">75%</span>
-            </div>
-            <div class="skill-bar">
-              <div class="skill-fill" data-w="75"></div>
-            </div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-row">
-              <span class="skill-name">CI3</span
-              ><span class="skill-pct">80%</span>
-            </div>
-            <div class="skill-bar">
-              <div class="skill-fill" data-w="80"></div>
-            </div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-row">
-              <span class="skill-name">UI/UX Design (Figma)</span
-              ><span class="skill-pct">70%</span>
-            </div>
-            <div class="skill-bar">
-              <div class="skill-fill" data-w="70"></div>
-            </div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-row">
-              <span class="skill-name">Git & Version Control</span
-              ><span class="skill-pct">90%</span>
-            </div>
-            <div class="skill-bar">
-              <div class="skill-fill" data-w="90"></div>
-            </div>
-          </div>
+          <div class="skill-item"><div class="skill-row"><span class="skill-name">HTML & CSS</span><span class="skill-pct">90%</span></div><div class="skill-bar"><div class="skill-fill" data-w="90"></div></div></div>
+          <div class="skill-item"><div class="skill-row"><span class="skill-name">JavaScript</span><span class="skill-pct">75%</span></div><div class="skill-bar"><div class="skill-fill" data-w="75"></div></div></div>
+          <div class="skill-item"><div class="skill-row"><span class="skill-name">PHP</span><span class="skill-pct">75%</span></div><div class="skill-bar"><div class="skill-fill" data-w="75"></div></div></div>
+          <div class="skill-item"><div class="skill-row"><span class="skill-name">C/C++</span><span class="skill-pct">65%</span></div><div class="skill-bar"><div class="skill-fill" data-w="65"></div></div></div>
+          <div class="skill-item"><div class="skill-row"><span class="skill-name">Python</span><span class="skill-pct">70%</span></div><div class="skill-bar"><div class="skill-fill" data-w="70"></div></div></div>
+          <div class="skill-item"><div class="skill-row"><span class="skill-name">MySQL & Database</span><span class="skill-pct">85%</span></div><div class="skill-bar"><div class="skill-fill" data-w="85"></div></div></div>
+          <div class="skill-item"><div class="skill-row"><span class="skill-name">Laravel</span><span class="skill-pct">75%</span></div><div class="skill-bar"><div class="skill-fill" data-w="75"></div></div></div>
+          <div class="skill-item"><div class="skill-row"><span class="skill-name">CI3</span><span class="skill-pct">80%</span></div><div class="skill-bar"><div class="skill-fill" data-w="80"></div></div></div>
+          <div class="skill-item"><div class="skill-row"><span class="skill-name">UI/UX Design (Figma)</span><span class="skill-pct">70%</span></div><div class="skill-bar"><div class="skill-fill" data-w="70"></div></div></div>
+          <div class="skill-item"><div class="skill-row"><span class="skill-name">Git & Version Control</span><span class="skill-pct">90%</span></div><div class="skill-bar"><div class="skill-fill" data-w="90"></div></div></div>
         </div>
-
         <div class="reveal reveal-delay-2">
           <div class="skills-col-title">🧠 Soft Skills</div>
           <div class="soft-skills-grid">
-            <div class="soft-card">
-              <div class="soft-icon">🎯</div>
-              <div class="soft-name">Problem Solving</div>
-              <div class="soft-desc">
-                Analitis dalam memecahkan masalah teknis dengan pendekatan
-                sistematis.
-              </div>
-            </div>
-            <div class="soft-card">
-              <div class="soft-icon">🤝</div>
-              <div class="soft-name">Teamwork</div>
-              <div class="soft-desc">
-                Kolaboratif dalam tim lintas divisi, adaptif terhadap berbagai
-                karakter.
-              </div>
-            </div>
-            <div class="soft-card">
-              <div class="soft-icon">📢</div>
-              <div class="soft-name">Komunikasi</div>
-              <div class="soft-desc">
-                Mampu menyampaikan ide teknis secara jelas kepada berbagai
-                audiens.
-              </div>
-            </div>
-            <div class="soft-card">
-              <div class="soft-icon">🏆</div>
-              <div class="soft-name">Leadership</div>
-              <div class="soft-desc">
-                Berpengalaman memimpin tim dalam kegiatan organisasi dan
-                kepanitiaan.
-              </div>
-            </div>
-            <div class="soft-card">
-              <div class="soft-icon">⏰</div>
-              <div class="soft-name">Time Management</div>
-              <div class="soft-desc">
-                Terbiasa mengelola deadline ketat antara project kuliah dan
-                organisasi.
-              </div>
-            </div>
-            <div class="soft-card">
-              <div class="soft-icon">🌱</div>
-              <div class="soft-name">Fast Learner</div>
-              <div class="soft-desc">
-                Cepat beradaptasi dengan teknologi dan tools baru yang relevan.
-              </div>
-            </div>
+            <div class="soft-card"><div class="soft-icon">🎯</div><div class="soft-name">Problem Solving</div><div class="soft-desc">Analitis dalam memecahkan masalah teknis dengan pendekatan sistematis.</div></div>
+            <div class="soft-card"><div class="soft-icon">🤝</div><div class="soft-name">Teamwork</div><div class="soft-desc">Kolaboratif dalam tim lintas divisi, adaptif terhadap berbagai karakter.</div></div>
+            <div class="soft-card"><div class="soft-icon">📢</div><div class="soft-name">Komunikasi</div><div class="soft-desc">Mampu menyampaikan ide teknis secara jelas kepada berbagai audiens.</div></div>
+            <div class="soft-card"><div class="soft-icon">🏆</div><div class="soft-name">Leadership</div><div class="soft-desc">Berpengalaman memimpin tim dalam kegiatan organisasi dan kepanitiaan.</div></div>
+            <div class="soft-card"><div class="soft-icon">⏰</div><div class="soft-name">Time Management</div><div class="soft-desc">Terbiasa mengelola deadline ketat antara project kuliah dan organisasi.</div></div>
+            <div class="soft-card"><div class="soft-icon">🌱</div><div class="soft-name">Fast Learner</div><div class="soft-desc">Cepat beradaptasi dengan teknologi dan tools baru yang relevan.</div></div>
           </div>
         </div>
       </div>
@@ -2330,123 +1389,57 @@
     <!-- ===== EXPERIENCE ===== -->
     <section id="experience">
       <p class="section-label reveal">Perjalanan</p>
-      <h2 class="section-title reveal reveal-delay-1">
-        Experience & <span class="hl">Organisasi</span>
-      </h2>
-      <p class="section-sub reveal reveal-delay-2">
-        Rekam jejak keterlibatan saya dalam kegiatan akademik, organisasi, dan
-        pengembangan profesional.
-      </p>
-
+      <h2 class="section-title reveal reveal-delay-1">Experience & <span class="hl">Organisasi</span></h2>
+      <p class="section-sub reveal reveal-delay-2">Rekam jejak keterlibatan saya dalam kegiatan akademik, organisasi, dan pengembangan profesional.</p>
       <div class="timeline">
         <div class="timeline-item reveal">
           <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
           <div class="timeline-content">
             <div class="timeline-period">Jul 2025 — Now</div>
             <div class="timeline-role">Magang</div>
-            <div class="timeline-org">
-              PT TD AUTOMOTIVE COMPRESSOR INDONESIA
-            </div>
-            <p class="timeline-desc">
-              Development aplikasi berbasis web Quality Management System
-              (QMS).<br />
-              Development aplikasi berbasis web Tooling Management System
-              (TMS).<br />
-              Development aplikasi berbasis web Digi-Kentokai System.<br />
-              Melakukan analisis kebutuhan user dan menyusun desain projek &
-              database.<br />
-              Implementasi rancangan dengan PHP, SQL Server, Laragon, dan Git
-              Server.
-            </p>
-            <div class="timeline-badges">
-              <span class="timeline-badge">PHP</span>
-              <span class="timeline-badge">HTML/CSS</span>
-              <span class="timeline-badge">JavaScript</span>
-              <span class="timeline-badge">SQL Server</span>
-              <span class="timeline-badge">Git</span>
-            </div>
+            <div class="timeline-org">PT TD AUTOMOTIVE COMPRESSOR INDONESIA</div>
+            <p class="timeline-desc">Development aplikasi berbasis web Quality Management System (QMS).<br/>Development aplikasi berbasis web Tooling Management System (TMS).<br/>Development aplikasi berbasis web Digi-Kentokai System.<br/>Melakukan analisis kebutuhan user dan menyusun desain projek & database.<br/>Implementasi rancangan dengan PHP, SQL Server, Laragon, dan Git Server.</p>
+            <div class="timeline-badges"><span class="timeline-badge">PHP</span><span class="timeline-badge">HTML/CSS</span><span class="timeline-badge">JavaScript</span><span class="timeline-badge">SQL Server</span><span class="timeline-badge">Git</span></div>
           </div>
         </div>
-
         <div class="timeline-item reveal reveal-delay-1">
           <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
           <div class="timeline-content">
             <div class="timeline-period">Sep 2024 — Feb 2025</div>
             <div class="timeline-role">Asisten Praktikum Dasar Pemrograman</div>
-            <div class="timeline-org">
-              Informatika - Universitas Al Azhar Indonesia
-            </div>
-            <p class="timeline-desc">
-              Membantu mahasiswa memahami konsep pemrograman dasar, sintaksis,
-              dan logika. Memberikan bimbingan penulisan kode C/C++ yang efisien
-              dan terstandarisasi.
-            </p>
-            <div class="timeline-badges">
-              <span class="timeline-badge">C/C++</span>
-              <span class="timeline-badge">Komunikasi</span>
-              <span class="timeline-badge">Manajemen Waktu</span>
-            </div>
+            <div class="timeline-org">Informatika - Universitas Al Azhar Indonesia</div>
+            <p class="timeline-desc">Membantu mahasiswa memahami konsep pemrograman dasar, sintaksis, dan logika. Memberikan bimbingan penulisan kode C/C++ yang efisien dan terstandarisasi.</p>
+            <div class="timeline-badges"><span class="timeline-badge">C/C++</span><span class="timeline-badge">Komunikasi</span><span class="timeline-badge">Manajemen Waktu</span></div>
           </div>
         </div>
-
         <div class="timeline-item reveal reveal-delay-2">
           <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
           <div class="timeline-content">
             <div class="timeline-period">Mar 2024 — Agu 2024</div>
-            <div class="timeline-role">
-              Asisten Praktikum Algoritma Pemrograman
-            </div>
-            <div class="timeline-org">
-              Informatika - Universitas Al Azhar Indonesia
-            </div>
-            <p class="timeline-desc">
-              Membantu mahasiswa dalam memahami algoritma, struktur data, dan
-              logika pemrograman Python. Mengevaluasi tugas dengan umpan balik
-              konstruktif.
-            </p>
-            <div class="timeline-badges">
-              <span class="timeline-badge">Python</span>
-              <span class="timeline-badge">Komunikasi</span>
-              <span class="timeline-badge">Manajemen Waktu</span>
-            </div>
+            <div class="timeline-role">Asisten Praktikum Algoritma Pemrograman</div>
+            <div class="timeline-org">Informatika - Universitas Al Azhar Indonesia</div>
+            <p class="timeline-desc">Membantu mahasiswa dalam memahami algoritma, struktur data, dan logika pemrograman Python. Mengevaluasi tugas dengan umpan balik konstruktif.</p>
+            <div class="timeline-badges"><span class="timeline-badge">Python</span><span class="timeline-badge">Komunikasi</span><span class="timeline-badge">Manajemen Waktu</span></div>
           </div>
         </div>
-
         <div class="timeline-item reveal reveal-delay-3">
           <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
           <div class="timeline-content">
             <div class="timeline-period">Mar 2024 — Feb 2025</div>
             <div class="timeline-role">Anggota Departemen Humas & Advokasi</div>
             <div class="timeline-org">Himpunan Mahasiswa Informatika</div>
-            <p class="timeline-desc">
-              Membangun hubungan eksternal dan internal. Ketua pelaksana program
-              kerja Studi Ekskursi. Mengadvokasi kepentingan mahasiswa dalam
-              berbagai isu relevan.
-            </p>
-            <div class="timeline-badges">
-              <span class="timeline-badge">Bekerja Tim</span>
-              <span class="timeline-badge">Kepemimpinan</span>
-              <span class="timeline-badge">Manajemen Waktu</span>
-            </div>
+            <p class="timeline-desc">Membangun hubungan eksternal dan internal. Ketua pelaksana program kerja Studi Ekskursi. Mengadvokasi kepentingan mahasiswa dalam berbagai isu relevan.</p>
+            <div class="timeline-badges"><span class="timeline-badge">Bekerja Tim</span><span class="timeline-badge">Kepemimpinan</span><span class="timeline-badge">Manajemen Waktu</span></div>
           </div>
         </div>
-
         <div class="timeline-item reveal reveal-delay-3">
           <div class="timeline-dot"><div class="timeline-dot-inner"></div></div>
           <div class="timeline-content">
             <div class="timeline-period">Mar 2023 — Feb 2024</div>
             <div class="timeline-role">Anggota Departemen PSDM</div>
             <div class="timeline-org">Himpunan Mahasiswa Informatika</div>
-            <p class="timeline-desc">
-              Sekretaris divisi dengan tanggung jawab administrasi dan
-              dokumentasi kegiatan. Berkontribusi dalam program LDKM dan Pekan
-              Olahraga (SONIC).
-            </p>
-            <div class="timeline-badges">
-              <span class="timeline-badge">Bekerja Tim</span>
-              <span class="timeline-badge">Kepemimpinan</span>
-              <span class="timeline-badge">Administrasi</span>
-            </div>
+            <p class="timeline-desc">Sekretaris divisi dengan tanggung jawab administrasi dan dokumentasi kegiatan. Berkontribusi dalam program LDKM dan Pekan Olahraga (SONIC).</p>
+            <div class="timeline-badges"><span class="timeline-badge">Bekerja Tim</span><span class="timeline-badge">Kepemimpinan</span><span class="timeline-badge">Administrasi</span></div>
           </div>
         </div>
       </div>
@@ -2457,138 +1450,45 @@
     <!-- ===== CONTACT ===== -->
     <section id="contact">
       <p class="section-label reveal">Get In Touch</p>
-      <h2 class="section-title reveal reveal-delay-1">
-        Mari <span class="hl">Terhubung</span>
-      </h2>
-
+      <h2 class="section-title reveal reveal-delay-1">Mari <span class="hl">Terhubung</span></h2>
       <div class="contact-layout">
         <div class="reveal">
           <p class="contact-info-title">Siap berkolaborasi!</p>
-          <p class="contact-info-desc">
-            Saya terbuka untuk peluang kerja, freelance, maupun diskusi seputar
-            teknologi. Jangan ragu untuk menghubungi saya melalui form ini atau
-            kontak di bawah.
-          </p>
+          <p class="contact-info-desc">Saya terbuka untuk peluang kerja, freelance, maupun diskusi seputar teknologi. Jangan ragu untuk menghubungi saya melalui form ini atau kontak di bawah.</p>
           <div class="contact-links">
-            <a
-              href="https://mail.google.com/mail/?view=cm&to=aditiaputra6907@gmail.com"
-              target="_blank"
-              class="contact-link-item"
-            >
-              <div class="contact-link-icon">
-                <img
-                  src="https://cdn.simpleicons.org/gmail/EA4335"
-                  width="20"
-                  height="20"
-                />
-              </div>
-              <div>
-                <div class="contact-link-label">Email</div>
-                <div class="contact-link-val">aditiaputra6907@gmail.com</div>
-              </div>
+            <a href="https://mail.google.com/mail/?view=cm&to=aditiaputra6907@gmail.com" target="_blank" class="contact-link-item">
+              <div class="contact-link-icon"><img src="https://cdn.simpleicons.org/gmail/EA4335" width="20" height="20" /></div>
+              <div><div class="contact-link-label">Email</div><div class="contact-link-val">aditiaputra6907@gmail.com</div></div>
             </a>
-            <a
-              href="https://www.linkedin.com/in/aditia-putra-41a579279/"
-              target="_blank"
-              class="contact-link-item"
-            >
+            <a href="https://www.linkedin.com/in/aditia-putra-41a579279/" target="_blank" class="contact-link-item">
               <div class="contact-link-icon">
-                <img
-                  src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/linkedin.svg"
-                  width="20"
-                  height="20"
-                  style="
-                    filter: brightness(0) saturate(100%) invert(29%) sepia(97%)
-                      saturate(1234%) hue-rotate(196deg) brightness(95%)
-                      contrast(101%);
-                  "
-                />
+                <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/linkedin.svg" width="20" height="20" style="filter:brightness(0) saturate(100%) invert(29%) sepia(97%) saturate(1234%) hue-rotate(196deg) brightness(95%) contrast(101%)" />
               </div>
-              <div>
-                <div class="contact-link-label">LinkedIn</div>
-                <div class="contact-link-val">linkedin.com/AditiaPutra</div>
-              </div>
+              <div><div class="contact-link-label">LinkedIn</div><div class="contact-link-val">linkedin.com/AditiaPutra</div></div>
             </a>
-            <a
-              href="https://github.com/AditiaPutra16"
-              target="_blank"
-              class="contact-link-item"
-            >
+            <a href="https://github.com/AditiaPutra16" target="_blank" class="contact-link-item">
               <div class="contact-link-icon">
-                <img
-                  src="https://cdn.simpleicons.org/github/ffffff"
-                  width="20"
-                  height="20"
-                />
+                <!-- PERUBAHAN: class github-icon — warna berubah via CSS variabel -->
+                <img src="https://cdn.simpleicons.org/github/ffffff" class="github-icon" width="20" height="20" />
               </div>
-              <div>
-                <div class="contact-link-label">GitHub</div>
-                <div class="contact-link-val">github.com/AditiaPutra16</div>
-              </div>
+              <div><div class="contact-link-label">GitHub</div><div class="contact-link-val">github.com/AditiaPutra16</div></div>
             </a>
-            <a
-              href="https://www.instagram.com/adt_putra1/"
-              target="_blank"
-              class="contact-link-item"
-            >
-              <div class="contact-link-icon">
-                <img
-                  src="https://cdn.simpleicons.org/instagram/E4405F"
-                  width="20"
-                  height="20"
-                />
-              </div>
-              <div>
-                <div class="contact-link-label">Instagram</div>
-                <div class="contact-link-val">adt_putra1</div>
-              </div>
+            <a href="https://www.instagram.com/adt_putra1/" target="_blank" class="contact-link-item">
+              <div class="contact-link-icon"><img src="https://cdn.simpleicons.org/instagram/E4405F" width="20" height="20" /></div>
+              <div><div class="contact-link-label">Instagram</div><div class="contact-link-val">adt_putra1</div></div>
             </a>
           </div>
         </div>
-
         <div class="reveal reveal-delay-2">
           <div class="contact-form">
             <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">Nama</label>
-                <input type="text" class="form-input" placeholder="John Doe" />
-              </div>
-              <div class="form-group">
-                <label class="form-label">Email</label>
-                <input
-                  type="email"
-                  class="form-input"
-                  placeholder="john@email.com"
-                />
-              </div>
+              <div class="form-group"><label class="form-label">Nama</label><input type="text" id="nama" class="form-input" placeholder="John Doe" /></div>
+              <div class="form-group"><label class="form-label">Email</label><input type="email" id="email" class="form-input" placeholder="john@email.com" /></div>
             </div>
-            <div class="form-group">
-              <label class="form-label">Subjek</label>
-              <input
-                type="text"
-                class="form-input"
-                placeholder="Tawaran kerja / Kolaborasi / ..."
-              />
-            </div>
-            <div class="form-group">
-              <label class="form-label">Pesan</label>
-              <textarea
-                class="form-textarea"
-                placeholder="Halo Aditia, saya ingin..."
-              ></textarea>
-            </div>
+            <div class="form-group"><label class="form-label">Subjek</label><input type="text" id="subjek" class="form-input" placeholder="Tawaran kerja / Kolaborasi / ..." /></div>
+            <div class="form-group"><label class="form-label">Pesan</label><textarea id="pesan" class="form-textarea" placeholder="Halo Aditia, saya ingin..."></textarea></div>
             <button class="form-submit" onclick="handleSubmit(event)">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.5"
-              >
-                <line x1="22" y1="2" x2="11" y2="13" />
-                <polygon points="22 2 15 22 11 13 2 9 22 2" />
-              </svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
               Kirim Pesan
             </button>
           </div>
@@ -2598,189 +1498,155 @@
 
     <!-- ===== FOOTER ===== -->
     <footer>
-      <div class="footer-left">
-        &copy; 2026 <span>Aditia Putra</span> · Designed & Built with ❤️
-      </div>
+      <div class="footer-left">&copy; 2026 <span>Aditia Putra</span> · Designed & Built with ❤️</div>
     </footer>
 
     <script>
-      /* ===== CURSOR ===== */
-      const cursor = document.getElementById("cursor");
-      const ring = document.getElementById("cursorRing");
-      let mx = 0,
-        my = 0,
-        rx = 0,
-        ry = 0;
-      document.addEventListener("mousemove", (e) => {
-        mx = e.clientX;
-        my = e.clientY;
+      /* ============================================================
+         PERUBAHAN 3: LOGIKA THEME TOGGLE
+         - setTheme(t): set data-theme di <html>, simpan ke localStorage
+         - Saat load: baca preferensi dari localStorage, fallback ke 'dark'
+         - Tombol toggle: flip antara 'dark' dan 'light'
+      ============================================================ */
+      function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('portfolio-theme', theme);
+        // Update tooltip
+        const btn = document.getElementById('themeToggle');
+        btn.setAttribute('data-tip', theme === 'dark' ? 'Switch to Light' : 'Switch to Dark');
+      }
+
+      // Baca preferensi tersimpan (default: dark)
+      const savedTheme = localStorage.getItem('portfolio-theme') || 'dark';
+      setTheme(savedTheme);
+
+      document.getElementById('themeToggle').addEventListener('click', () => {
+        const current = document.documentElement.getAttribute('data-theme');
+        setTheme(current === 'dark' ? 'light' : 'dark');
       });
+
+      /* ===== CURSOR ===== */
+      const cursor = document.getElementById('cursor');
+      const ring = document.getElementById('cursorRing');
+      let mx = 0, my = 0, rx = 0, ry = 0;
+      document.addEventListener('mousemove', (e) => { mx = e.clientX; my = e.clientY; });
       function animCursor() {
         rx += (mx - rx) * 0.15;
         ry += (my - ry) * 0.15;
-        if (cursor)
-          cursor.style.transform = `translate(${mx - 5}px, ${my - 5}px)`;
-        if (ring)
-          ring.style.transform = `translate(${rx - 16}px, ${ry - 16}px)`;
+        if (cursor) cursor.style.transform = `translate(${mx - 5}px, ${my - 5}px)`;
+        if (ring) ring.style.transform = `translate(${rx - 16}px, ${ry - 16}px)`;
         requestAnimationFrame(animCursor);
       }
       animCursor();
-      document
-        .querySelectorAll("a, button, .project-card, .soft-card, .tech-chip")
-        .forEach((el) => {
-          el.addEventListener("mouseenter", () => {
-            if (ring) {
-              ring.style.width = "52px";
-              ring.style.height = "52px";
-              ring.style.borderColor = "rgba(59,130,246,0.7)";
-            }
-          });
-          el.addEventListener("mouseleave", () => {
-            if (ring) {
-              ring.style.width = "32px";
-              ring.style.height = "32px";
-              ring.style.borderColor = "rgba(59,130,246,0.5)";
-            }
-          });
-        });
+      document.querySelectorAll('a, button, .project-card, .soft-card, .tech-chip').forEach((el) => {
+        el.addEventListener('mouseenter', () => { if (ring) { ring.style.width = '52px'; ring.style.height = '52px'; ring.style.borderColor = 'rgba(59,130,246,0.7)'; } });
+        el.addEventListener('mouseleave', () => { if (ring) { ring.style.width = '32px'; ring.style.height = '32px'; ring.style.borderColor = 'rgba(59,130,246,0.5)'; } });
+      });
 
       /* ===== NAVBAR SCROLL ===== */
-      const nav = document.getElementById("navbar");
-      window.addEventListener("scroll", () => {
-        nav.classList.toggle("scrolled", window.scrollY > 60);
-      });
+      const nav = document.getElementById('navbar');
+      window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 60); });
 
       /* ===== HAMBURGER + MOBILE MENU ===== */
-      const hamburger = document.getElementById("hamburger");
-      const mobileMenu = document.getElementById("mobileMenu");
-      const backdrop = document.getElementById("mobileBackdrop");
-
-      function openMobile() {
-        hamburger.classList.add("active");
-        mobileMenu.classList.add("open");
-        backdrop.classList.add("open");
-        document.body.style.overflow = "hidden"; // cegah scroll saat menu terbuka
-      }
-
-      function closeMobile() {
-        hamburger.classList.remove("active");
-        mobileMenu.classList.remove("open");
-        backdrop.classList.remove("open");
-        document.body.style.overflow = "";
-      }
-
-      hamburger.addEventListener("click", () => {
-        hamburger.classList.contains("active") ? closeMobile() : openMobile();
-      });
-
-      // Tutup saat klik backdrop
-      backdrop.addEventListener("click", closeMobile);
-
-      // Tutup saat tekan Escape
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeMobile();
-      });
+      const hamburger = document.getElementById('hamburger');
+      const mobileMenu = document.getElementById('mobileMenu');
+      const backdrop = document.getElementById('mobileBackdrop');
+      function openMobile() { hamburger.classList.add('active'); mobileMenu.classList.add('open'); backdrop.classList.add('open'); document.body.style.overflow = 'hidden'; }
+      function closeMobile() { hamburger.classList.remove('active'); mobileMenu.classList.remove('open'); backdrop.classList.remove('open'); document.body.style.overflow = ''; }
+      hamburger.addEventListener('click', () => { hamburger.classList.contains('active') ? closeMobile() : openMobile(); });
+      backdrop.addEventListener('click', closeMobile);
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMobile(); });
 
       /* ===== SCROLL REVEAL ===== */
-      const reveals = document.querySelectorAll(".reveal");
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((e) => {
-            if (e.isIntersecting) e.target.classList.add("visible");
-          });
-        },
-        { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
-      );
+      const reveals = document.querySelectorAll('.reveal');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('visible'); });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
       reveals.forEach((el) => observer.observe(el));
 
       /* ===== SKILL BARS ===== */
-      const skillObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((e) => {
-            if (e.isIntersecting) {
-              e.target.querySelectorAll(".skill-fill").forEach((bar) => {
-                setTimeout(() => {
-                  bar.style.width = bar.dataset.w + "%";
-                }, 200);
-              });
-            }
-          });
-        },
-        { threshold: 0.3 }
-      );
-      document
-        .querySelectorAll("#skills")
-        .forEach((s) => skillObserver.observe(s));
+      const skillObserver = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.querySelectorAll('.skill-fill').forEach((bar) => {
+              setTimeout(() => { bar.style.width = bar.dataset.w + '%'; }, 200);
+            });
+          }
+        });
+      }, { threshold: 0.3 });
+      document.querySelectorAll('#skills').forEach((s) => skillObserver.observe(s));
 
       /* ===== FORM SUBMIT ===== */
       function handleSubmit(e) {
         e.preventDefault();
         const btn = e.target;
-        btn.innerHTML = "✓ Pesan Terkirim!";
-        btn.style.background = "#10b981";
+        btn.innerHTML = '✓ Pesan Terkirim!';
+        btn.style.background = '#10b981';
         setTimeout(() => {
-          btn.innerHTML =
-            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Kirim Pesan';
-          btn.style.background = "";
+          btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Kirim Pesan';
+          btn.style.background = '';
         }, 3000);
       }
 
       /* ===== ACTIVE NAV ===== */
-      const sections = document.querySelectorAll("section[id]");
-      const navLinks = document.querySelectorAll(".nav-links a");
-      window.addEventListener("scroll", () => {
-        let current = "";
-        sections.forEach((s) => {
-          if (window.scrollY >= s.offsetTop - 120)
-            current = s.getAttribute("id");
-        });
-        navLinks.forEach((a) => {
-          a.style.color = "";
-          if (a.getAttribute("href") === "#" + current)
-            a.style.color = "var(--blue-light)";
-        });
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.nav-links a');
+      window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach((s) => { if (window.scrollY >= s.offsetTop - 120) current = s.getAttribute('id'); });
+        navLinks.forEach((a) => { a.style.color = ''; if (a.getAttribute('href') === '#' + current) a.style.color = 'var(--blue-light)'; });
       });
 
-      /* ===== TYPEWRITER EFFECT ===== */
-      const headline = document.querySelector(".hero-headline");
+      /* ===== TYPEWRITER ===== */
+      const headline = document.querySelector('.hero-headline');
       const texts = [
-        "// Web Developer · Data Science · Tech Explorer",
-        "// Fresh Graduate · Problem Solver · Fast Learner",
-        "// Open to Work · Collaborative · Passionate Coder"
+        '// Web Developer · Data Science · Tech Explorer',
+        '// Fresh Graduate · Problem Solver · Fast Learner',
+        '// Open to Work · Collaborative · Passionate Coder'
       ];
-      let tIdx = 0,
-        cIdx = 0,
-        isDeleting = false;
+      let tIdx = 0, cIdx = 0, isDeleting = false;
       function typeEffect() {
         const current = texts[tIdx];
-        headline.textContent = isDeleting
-          ? current.substring(0, cIdx - 1)
-          : current.substring(0, cIdx + 1);
+        headline.textContent = isDeleting ? current.substring(0, cIdx - 1) : current.substring(0, cIdx + 1);
         isDeleting ? cIdx-- : cIdx++;
         let speed = isDeleting ? 30 : 55;
-        if (!isDeleting && cIdx === current.length) {
-          speed = 2500;
-          isDeleting = true;
-        }
-        if (isDeleting && cIdx === 0) {
-          isDeleting = false;
-          tIdx = (tIdx + 1) % texts.length;
-          speed = 300;
-        }
+        if (!isDeleting && cIdx === current.length) { speed = 2500; isDeleting = true; }
+        if (isDeleting && cIdx === 0) { isDeleting = false; tIdx = (tIdx + 1) % texts.length; speed = 300; }
         setTimeout(typeEffect, speed);
       }
       setTimeout(typeEffect, 1200);
 
       /* ===== SLIDESHOW ===== */
-      document.querySelectorAll(".slideshow").forEach((slideshow) => {
-        const imgs = slideshow.querySelectorAll(".slide-img");
+      document.querySelectorAll('.slideshow').forEach((slideshow) => {
+        const imgs = slideshow.querySelectorAll('.slide-img');
         let current = 0;
         setInterval(() => {
-          imgs[current].style.opacity = "0";
+          imgs[current].style.opacity = '0';
           current = (current + 1) % imgs.length;
-          imgs[current].style.opacity = "1";
+          imgs[current].style.opacity = '1';
         }, 3000);
       });
+
+      function handleSubmit(event) {
+    event.preventDefault();
+
+    const nama = document.getElementById("nama").value;
+    const email = document.getElementById("email").value;
+    const subjek = document.getElementById("subjek").value;
+    const pesan = document.getElementById("pesan").value;
+
+    const noWA = "6282214783810"; // GANTI dengan nomor kamu (format internasional tanpa +)
+
+    const text = `Halo Aditia,%0A
+      Nama: ${nama}%0A
+      Email: ${email}%0A
+      Subjek: ${subjek}%0A
+      Pesan: ${pesan}`;
+
+    const url = `https://wa.me/qr/LFCHWQG47T6PD1/${noWA}?text=${text}`;
+
+    window.open(url, "_blank");
+}
     </script>
   </body>
 </html>
