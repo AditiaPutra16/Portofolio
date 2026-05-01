@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
@@ -98,7 +98,9 @@
         line-height: 1.7;
         cursor: none;
         /* Transisi halus saat tema berganti */
-        transition: background 0.35s ease, color 0.35s ease;
+        transition:
+          background 0.35s ease,
+          color 0.35s ease;
       }
 
       /* ===== CUSTOM CURSOR ===== */
@@ -126,7 +128,10 @@
         left: 0;
         pointer-events: none;
         z-index: 9998;
-        transition: transform 0.15s ease, width 0.2s, height 0.2s;
+        transition:
+          transform 0.15s ease,
+          width 0.2s,
+          height 0.2s;
       }
       @media (max-width: 768px) {
         body {
@@ -165,7 +170,10 @@
         /* PERUBAHAN: warna nav dari variabel */
         background: var(--nav-bg);
         border-bottom: 1px solid var(--border-solid);
-        transition: padding 0.3s, background 0.35s, box-shadow 0.3s;
+        transition:
+          padding 0.3s,
+          background 0.35s,
+          box-shadow 0.3s;
       }
       nav.scrolled {
         padding: 14px 60px;
@@ -230,7 +238,10 @@
         justify-content: center;
         cursor: pointer;
         font-size: 1.1rem;
-        transition: border-color 0.2s, background 0.2s, transform 0.35s;
+        transition:
+          border-color 0.2s,
+          background 0.2s,
+          transform 0.35s;
         position: relative;
         z-index: 200;
         flex-shrink: 0;
@@ -296,7 +307,9 @@
         border-radius: 8px;
         border: 1px solid var(--border-solid);
         background: rgba(59, 130, 246, 0.05);
-        transition: border-color 0.2s, background 0.2s;
+        transition:
+          border-color 0.2s,
+          background 0.2s;
         position: relative;
         z-index: 200;
       }
@@ -310,8 +323,10 @@
         height: 1.5px;
         background: var(--white);
         border-radius: 2px;
-        transition: transform 0.35s cubic-bezier(0.23, 1, 0.32, 1),
-          opacity 0.2s ease, background 0.2s;
+        transition:
+          transform 0.35s cubic-bezier(0.23, 1, 0.32, 1),
+          opacity 0.2s ease,
+          background 0.2s;
         transform-origin: center;
       }
       .hamburger.active span:nth-child(1) {
@@ -343,10 +358,8 @@
       .hero-bg-grid {
         position: absolute;
         inset: 0;
-        background-image: linear-gradient(
-            rgba(59, 130, 246, 0.04) 1px,
-            transparent 1px
-          ),
+        background-image:
+          linear-gradient(rgba(59, 130, 246, 0.04) 1px, transparent 1px),
           linear-gradient(90deg, rgba(59, 130, 246, 0.04) 1px, transparent 1px);
         background-size: 60px 60px;
         mask-image: radial-gradient(
@@ -356,10 +369,8 @@
         );
       }
       [data-theme="light"] .hero-bg-grid {
-        background-image: linear-gradient(
-            rgba(37, 99, 235, 0.06) 1px,
-            transparent 1px
-          ),
+        background-image:
+          linear-gradient(rgba(37, 99, 235, 0.06) 1px, transparent 1px),
           linear-gradient(90deg, rgba(37, 99, 235, 0.06) 1px, transparent 1px);
       }
       .hero-glow {
@@ -484,7 +495,10 @@
         font-weight: 600;
         border-radius: 8px;
         text-decoration: none;
-        transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s,
+          background 0.2s;
         box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
       }
       .btn-primary:hover {
@@ -503,7 +517,10 @@
         font-weight: 600;
         border-radius: 8px;
         text-decoration: none;
-        transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s,
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s,
+          border-color 0.2s,
           background 0.2s;
       }
       [data-theme="light"] .btn-outline {
@@ -766,7 +783,10 @@
         font-family: var(--font-mono);
         font-size: 0.72rem;
         color: var(--muted);
-        transition: border-color 0.2s, color 0.2s, transform 0.2s,
+        transition:
+          border-color 0.2s,
+          color 0.2s,
+          transform 0.2s,
           box-shadow 0.2s;
       }
       [data-theme="light"] .tech-chip {
@@ -837,17 +857,22 @@
         border: 1px solid var(--border-solid);
         border-radius: 16px;
         overflow: hidden;
-        transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+        transition:
+          transform 0.3s,
+          border-color 0.3s,
+          box-shadow 0.3s;
         position: relative;
       }
       .project-card:hover {
         transform: translateY(-6px);
         border-color: rgba(59, 130, 246, 0.35);
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12),
+        box-shadow:
+          0 20px 60px rgba(0, 0, 0, 0.12),
           0 0 30px rgba(59, 130, 246, 0.08);
       }
       [data-theme="light"] .project-card:hover {
-        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.1),
+        box-shadow:
+          0 20px 50px rgba(15, 23, 42, 0.1),
           0 0 0 1px rgba(37, 99, 235, 0.08);
       }
       .project-card.featured {
@@ -938,7 +963,10 @@
         font-size: 0.75rem;
         color: var(--blue-light);
         text-decoration: none;
-        transition: color 0.2s, background 0.2s, border-color 0.2s;
+        transition:
+          color 0.2s,
+          background 0.2s,
+          border-color 0.2s;
         padding: 6px 12px;
         border: 1px solid rgba(59, 130, 246, 0.2);
         border-radius: 6px;
@@ -1017,7 +1045,10 @@
         background: var(--bg3);
         border: 1px solid var(--border-solid);
         border-radius: 12px;
-        transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        transition:
+          border-color 0.2s,
+          transform 0.2s,
+          box-shadow 0.2s;
       }
       [data-theme="light"] .soft-card {
         background: var(--surface);
@@ -1095,7 +1126,10 @@
         border: 1px solid var(--border-solid);
         border-radius: 14px;
         padding: 24px 28px;
-        transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        transition:
+          border-color 0.2s,
+          transform 0.2s,
+          box-shadow 0.2s;
       }
       .timeline-content:hover {
         border-color: rgba(59, 130, 246, 0.3);
@@ -1183,7 +1217,10 @@
         border: 1px solid var(--border-solid);
         border-radius: 12px;
         text-decoration: none;
-        transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        transition:
+          border-color 0.2s,
+          transform 0.2s,
+          box-shadow 0.2s;
       }
       .contact-link-item:hover {
         border-color: rgba(59, 130, 246, 0.35);
@@ -1244,7 +1281,9 @@
         font-size: 0.9rem;
         color: var(--white);
         outline: none;
-        transition: border-color 0.2s, box-shadow 0.2s;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
         resize: none;
       }
       .form-input:focus,
@@ -1273,7 +1312,10 @@
         border: none;
         border-radius: 10px;
         cursor: pointer;
-        transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s,
+          background 0.2s;
         box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
       }
       .form-submit:hover {
@@ -1306,7 +1348,8 @@
       .reveal {
         opacity: 0;
         transform: translateY(28px);
-        transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+        transition:
+          opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
           transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
       }
       .reveal.visible {
@@ -1360,7 +1403,8 @@
         flex-direction: column;
         padding: 80px 32px 40px;
         transform: translateX(100%);
-        transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+        transition:
+          transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
           background 0.35s;
       }
       .mobile-menu.open {
@@ -1377,7 +1421,9 @@
         text-decoration: none;
         padding: 16px 0;
         border-bottom: 1px solid var(--border-solid);
-        transition: color 0.2s, padding-left 0.2s;
+        transition:
+          color 0.2s,
+          padding-left 0.2s;
       }
       .mobile-menu a .menu-num {
         font-family: var(--font-mono);
@@ -1413,7 +1459,9 @@
         color: var(--muted);
         font-size: 0.75rem;
         font-family: var(--font-mono);
-        transition: border-color 0.2s, color 0.2s;
+        transition:
+          border-color 0.2s,
+          color 0.2s;
       }
       .mobile-social-btn:hover {
         border-color: rgba(59, 130, 246, 0.4);
@@ -1666,11 +1714,11 @@
       </div>
       <div class="hero-stats">
         <div class="stat">
-          <div class="stat-num">7<span>+</span></div>
+          <div class="stat-num">8<span>+</span></div>
           <div class="stat-label">Projects Completed</div>
         </div>
         <div class="stat">
-          <div class="stat-num">3<span>+</span></div>
+          <div class="stat-num">4<span>+</span></div>
           <div class="stat-label">Years Coding</div>
         </div>
       </div>
@@ -1727,14 +1775,20 @@
             <span class="about-tag">Open to Work</span>
           </div>
           <p class="about-text reveal reveal-delay-2">
-            Halo! Saya lulusan baru jurusan Informatika di Universitas Al Azhar
-            Indonesia dengan minat di bidang Fullstack Developer dan Data
-            Science. Melalui pengalaman magang sebagai Fullstack Developer, saya
+            Hallo!Saya lulusan baru jurusan Informatika di Universitas Al-Azhar
+            Indonesia dengan minat di bidang fullstack developer dan data
+            science. Melalui pengalaman magang sebagai fullstack developer, saya
             memperoleh kesempatan untuk terlibat langsung dalam pengembangan
             sistem serta mengasah keterampilan teknis dan analitis secara
             mendalam. Selain itu, partisipasi saya dalam berbagai proyek kursus,
             bootcamp, dan kompetisi di bidang data semakin memperkuat kemampuan
-            saya dalam mengolah dan menganalisis data.
+            saya dalam mengolah dan menganalisis data. Pengalaman saya dalam
+            berorganisasi selama dua periode juga membekali saya dengan
+            kemampuan komunikasi yang adaptif, penyelesaian masalah,
+            kepemimpinan yang kuat, kolaborasi yang solid, serta kemampuan
+            beradaptasi yang tinggi dalam menghadapi berbagai tantangan. Saya
+            percaya bahwa kombinasi antara soft skill dan hard skill yang saya
+            miliki dapat menjadi aset yang berharga bagi perusahaan.
           </p>
           <p class="about-text reveal reveal-delay-3">
             Saya percaya bahwa kombinasi antara soft skill dan hard skill yang
@@ -2451,6 +2505,101 @@
             </div>
           </div>
         </div>
+
+        <!-- Project 8 -->
+        <div class="project-card reveal reveal-delay-1">
+          <div
+            class="project-thumb"
+            style="position: relative; overflow: hidden; padding: 0"
+          >
+            <div
+              class="slideshow"
+              style="width: 100%; height: 100%; position: relative"
+            >
+              <img
+                src="file/office1.png"
+                class="slide-img"
+                style="
+                  position: absolute;
+                  inset: 0;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  opacity: 1;
+                  transition: opacity 0.8s ease;
+                "
+              />
+              <img
+                src="file/office2.png"
+                class="slide-img"
+                style="
+                  position: absolute;
+                  inset: 0;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  opacity: 0;
+                  transition: opacity 0.8s ease;
+                "
+              />
+              <img
+                src="file/office3.png"
+                class="slide-img"
+                style="
+                  position: absolute;
+                  inset: 0;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  opacity: 0;
+                  transition: opacity 0.8s ease;
+                "
+              />
+              <img
+                src="file/office4.png"
+                class="slide-img"
+                style="
+                  position: absolute;
+                  inset: 0;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  opacity: 0;
+                  transition: opacity 0.8s ease;
+                "
+              />
+            </div>
+            <span class="project-num">08</span>
+          </div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="project-tag">TypeScript</span>
+              <span class="project-tag">Next.js</span>
+              <span class="project-tag">HTML / CSS</span>
+              <span class="project-tag">Integrasi API</span>
+              <span class="project-tag">Routing</span>
+            </div>
+            <h3 class="project-title">Office Space</h3>
+            <p class="project-desc">
+              Mengembangkan web katalog Office Space sebagai media eksplorasi
+              konsep digital katalog ruang kerja. Aplikasi ini menampilkan
+              informasi fasilitas, harga, foto, alamat dan detail ruang dengan
+              tampilan yang modern dan responsif. Proyek ini berfokus pada
+              pengembangan front-end, struktur layout yang rapi, routing, serta
+              penyajian informasi yang mudah dipahami oleh pengguna.
+            </p>
+            <div class="project-links">
+              <a
+                href="https://github.com/AditiaPutra16/space_office"
+                class="project-link"
+                >GitHub</a
+              >
+              <a href="https://space-office.vercel.app/" class="project-link"
+                >Demo</a
+              >
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -2971,7 +3120,7 @@
         const btn = document.getElementById("themeToggle");
         btn.setAttribute(
           "data-tip",
-          theme === "dark" ? "Switch to Light" : "Switch to Dark"
+          theme === "dark" ? "Switch to Light" : "Switch to Dark",
         );
       }
 
@@ -3062,7 +3211,7 @@
             if (e.isIntersecting) e.target.classList.add("visible");
           });
         },
-        { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+        { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
       );
       reveals.forEach((el) => observer.observe(el));
 
@@ -3079,7 +3228,7 @@
             }
           });
         },
-        { threshold: 0.3 }
+        { threshold: 0.3 },
       );
       document
         .querySelectorAll("#skills")
@@ -3119,7 +3268,7 @@
       const texts = [
         "// Web Developer · Data Science · Tech Explorer",
         "// Fresh Graduate · Problem Solver · Fast Learner",
-        "// Open to Work · Collaborative · Passionate Coder"
+        "// Open to Work · Collaborative · Passionate Coder",
       ];
       let tIdx = 0,
         cIdx = 0,
