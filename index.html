@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
@@ -98,7 +98,9 @@
         line-height: 1.7;
         cursor: none;
         /* Transisi halus saat tema berganti */
-        transition: background 0.35s ease, color 0.35s ease;
+        transition:
+          background 0.35s ease,
+          color 0.35s ease;
       }
 
       /* ===== CUSTOM CURSOR ===== */
@@ -126,7 +128,10 @@
         left: 0;
         pointer-events: none;
         z-index: 9998;
-        transition: transform 0.15s ease, width 0.2s, height 0.2s;
+        transition:
+          transform 0.15s ease,
+          width 0.2s,
+          height 0.2s;
       }
       @media (max-width: 768px) {
         body {
@@ -165,7 +170,10 @@
         /* PERUBAHAN: warna nav dari variabel */
         background: var(--nav-bg);
         border-bottom: 1px solid var(--border-solid);
-        transition: padding 0.3s, background 0.35s, box-shadow 0.3s;
+        transition:
+          padding 0.3s,
+          background 0.35s,
+          box-shadow 0.3s;
       }
       nav.scrolled {
         padding: 14px 60px;
@@ -230,7 +238,10 @@
         justify-content: center;
         cursor: pointer;
         font-size: 1.1rem;
-        transition: border-color 0.2s, background 0.2s, transform 0.35s;
+        transition:
+          border-color 0.2s,
+          background 0.2s,
+          transform 0.35s;
         position: relative;
         z-index: 200;
         flex-shrink: 0;
@@ -296,7 +307,9 @@
         border-radius: 8px;
         border: 1px solid var(--border-solid);
         background: rgba(59, 130, 246, 0.05);
-        transition: border-color 0.2s, background 0.2s;
+        transition:
+          border-color 0.2s,
+          background 0.2s;
         position: relative;
         z-index: 200;
       }
@@ -310,8 +323,10 @@
         height: 1.5px;
         background: var(--white);
         border-radius: 2px;
-        transition: transform 0.35s cubic-bezier(0.23, 1, 0.32, 1),
-          opacity 0.2s ease, background 0.2s;
+        transition:
+          transform 0.35s cubic-bezier(0.23, 1, 0.32, 1),
+          opacity 0.2s ease,
+          background 0.2s;
         transform-origin: center;
       }
       .hamburger.active span:nth-child(1) {
@@ -343,10 +358,8 @@
       .hero-bg-grid {
         position: absolute;
         inset: 0;
-        background-image: linear-gradient(
-            rgba(59, 130, 246, 0.04) 1px,
-            transparent 1px
-          ),
+        background-image:
+          linear-gradient(rgba(59, 130, 246, 0.04) 1px, transparent 1px),
           linear-gradient(90deg, rgba(59, 130, 246, 0.04) 1px, transparent 1px);
         background-size: 60px 60px;
         mask-image: radial-gradient(
@@ -356,10 +369,8 @@
         );
       }
       [data-theme="light"] .hero-bg-grid {
-        background-image: linear-gradient(
-            rgba(37, 99, 235, 0.06) 1px,
-            transparent 1px
-          ),
+        background-image:
+          linear-gradient(rgba(37, 99, 235, 0.06) 1px, transparent 1px),
           linear-gradient(90deg, rgba(37, 99, 235, 0.06) 1px, transparent 1px);
       }
       .hero-glow {
@@ -484,7 +495,10 @@
         font-weight: 600;
         border-radius: 8px;
         text-decoration: none;
-        transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s,
+          background 0.2s;
         box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
       }
       .btn-primary:hover {
@@ -503,7 +517,10 @@
         font-weight: 600;
         border-radius: 8px;
         text-decoration: none;
-        transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s,
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s,
+          border-color 0.2s,
           background 0.2s;
       }
       [data-theme="light"] .btn-outline {
@@ -766,7 +783,10 @@
         font-family: var(--font-mono);
         font-size: 0.72rem;
         color: var(--muted);
-        transition: border-color 0.2s, color 0.2s, transform 0.2s,
+        transition:
+          border-color 0.2s,
+          color 0.2s,
+          transform 0.2s,
           box-shadow 0.2s;
       }
       [data-theme="light"] .tech-chip {
@@ -837,17 +857,22 @@
         border: 1px solid var(--border-solid);
         border-radius: 16px;
         overflow: hidden;
-        transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+        transition:
+          transform 0.3s,
+          border-color 0.3s,
+          box-shadow 0.3s;
         position: relative;
       }
       .project-card:hover {
         transform: translateY(-6px);
         border-color: rgba(59, 130, 246, 0.35);
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12),
+        box-shadow:
+          0 20px 60px rgba(0, 0, 0, 0.12),
           0 0 30px rgba(59, 130, 246, 0.08);
       }
       [data-theme="light"] .project-card:hover {
-        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.1),
+        box-shadow:
+          0 20px 50px rgba(15, 23, 42, 0.1),
           0 0 0 1px rgba(37, 99, 235, 0.08);
       }
       .project-card.featured {
@@ -938,7 +963,10 @@
         font-size: 0.75rem;
         color: var(--blue-light);
         text-decoration: none;
-        transition: color 0.2s, background 0.2s, border-color 0.2s;
+        transition:
+          color 0.2s,
+          background 0.2s,
+          border-color 0.2s;
         padding: 6px 12px;
         border: 1px solid rgba(59, 130, 246, 0.2);
         border-radius: 6px;
@@ -1017,7 +1045,10 @@
         background: var(--bg3);
         border: 1px solid var(--border-solid);
         border-radius: 12px;
-        transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        transition:
+          border-color 0.2s,
+          transform 0.2s,
+          box-shadow 0.2s;
       }
       [data-theme="light"] .soft-card {
         background: var(--surface);
@@ -1095,7 +1126,10 @@
         border: 1px solid var(--border-solid);
         border-radius: 14px;
         padding: 24px 28px;
-        transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        transition:
+          border-color 0.2s,
+          transform 0.2s,
+          box-shadow 0.2s;
       }
       .timeline-content:hover {
         border-color: rgba(59, 130, 246, 0.3);
@@ -1183,7 +1217,10 @@
         border: 1px solid var(--border-solid);
         border-radius: 12px;
         text-decoration: none;
-        transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        transition:
+          border-color 0.2s,
+          transform 0.2s,
+          box-shadow 0.2s;
       }
       .contact-link-item:hover {
         border-color: rgba(59, 130, 246, 0.35);
@@ -1244,7 +1281,9 @@
         font-size: 0.9rem;
         color: var(--white);
         outline: none;
-        transition: border-color 0.2s, box-shadow 0.2s;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
         resize: none;
       }
       .form-input:focus,
@@ -1273,7 +1312,10 @@
         border: none;
         border-radius: 10px;
         cursor: pointer;
-        transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s,
+          background 0.2s;
         box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
       }
       .form-submit:hover {
@@ -1306,7 +1348,8 @@
       .reveal {
         opacity: 0;
         transform: translateY(28px);
-        transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+        transition:
+          opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
           transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
       }
       .reveal.visible {
@@ -1360,7 +1403,8 @@
         flex-direction: column;
         padding: 80px 32px 40px;
         transform: translateX(100%);
-        transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+        transition:
+          transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
           background 0.35s;
       }
       .mobile-menu.open {
@@ -1377,7 +1421,9 @@
         text-decoration: none;
         padding: 16px 0;
         border-bottom: 1px solid var(--border-solid);
-        transition: color 0.2s, padding-left 0.2s;
+        transition:
+          color 0.2s,
+          padding-left 0.2s;
       }
       .mobile-menu a .menu-num {
         font-family: var(--font-mono);
@@ -1413,7 +1459,9 @@
         color: var(--muted);
         font-size: 0.75rem;
         font-family: var(--font-mono);
-        transition: border-color 0.2s, color 0.2s;
+        transition:
+          border-color 0.2s,
+          color 0.2s;
       }
       .mobile-social-btn:hover {
         border-color: rgba(59, 130, 246, 0.4);
@@ -1666,7 +1714,7 @@
       </div>
       <div class="hero-stats">
         <div class="stat">
-          <div class="stat-num">9<span>+</span></div>
+          <div class="stat-num">10<span>+</span></div>
           <div class="stat-label">Projects Completed</div>
         </div>
         <div class="stat">
@@ -1750,7 +1798,51 @@
             class="section-label reveal reveal-delay-3"
             style="margin-top: 32px"
           >
-            Tech Stack
+            Framework
+          </p>
+          <div class="tech-grid reveal reveal-delay-4">
+            <div class="tech-chip">
+              <img
+                src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg"
+                width="20"
+                height="20"
+              />Next.js
+            </div>
+            <div class="tech-chip">
+              <img
+                src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg"
+                width="20"
+                height="20"
+              />React.js
+            </div>
+            <div class="tech-chip">
+              <img
+                src="https://cdn.simpleicons.org/codeigniter/EF4223"
+                width="20"
+                height="20"
+              />CodeIgniter 3
+            </div>
+            <div class="tech-chip">
+              <img
+                src="https://cdn.simpleicons.org/laravel/FF2D20"
+                width="20"
+                height="20"
+              />Laravel
+            </div>
+            <div class="tech-chip">
+              <img
+                src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flutter/flutter-original.svg"
+                width="20"
+                height="20"
+                alt="Flutter Icon"
+              />Flutter
+            </div>
+          </div>
+          <p
+            class="section-label reveal reveal-delay-3"
+            style="margin-top: 32px"
+          >
+            Bahasa Pemrograman
           </p>
           <div class="tech-grid reveal reveal-delay-4">
             <div class="tech-chip">
@@ -1783,20 +1875,6 @@
             </div>
             <div class="tech-chip">
               <img
-                src="https://cdn.simpleicons.org/html5/E34F26"
-                width="20"
-                height="20"
-              />HTML
-            </div>
-            <div class="tech-chip">
-              <img
-                src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/css3.svg"
-                width="20"
-                height="20"
-              />CSS
-            </div>
-            <div class="tech-chip">
-              <img
                 src="https://cdn.simpleicons.org/c/A8B9CC"
                 width="20"
                 height="20"
@@ -1811,6 +1889,36 @@
             </div>
             <div class="tech-chip">
               <img
+                src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/kotlin/kotlin-original.svg"
+                width="20"
+                height="20"
+                alt="Kotlin Icon"
+              />Kotlin
+            </div>
+            <!-- <div class="tech-chip">
+              <img
+                src="https://cdn.simpleicons.org/html5/E34F26"
+                width="20"
+                height="20"
+              />HTML
+            </div>
+            <div class="tech-chip">
+              <img
+                src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg"
+                width="20"
+                height="20"
+              />CSS
+            </div> -->
+          </div>
+          <p
+            class="section-label reveal reveal-delay-3"
+            style="margin-top: 32px"
+          >
+            RDBMS
+          </p>
+          <div class="tech-grid reveal reveal-delay-4">
+            <div class="tech-chip">
+              <img
                 src="https://cdn.simpleicons.org/mysql/4479A1"
                 width="20"
                 height="20"
@@ -1818,52 +1926,78 @@
             </div>
             <div class="tech-chip">
               <img
-                src="https://cdn.simpleicons.org/nextdotjs/000000"
+                src="https://cdn.simpleicons.org/postgresql/4169E1"
                 width="20"
                 height="20"
-              />Next.js
+              />PostgreSQL
             </div>
             <div class="tech-chip">
               <img
-                src="https://cdn.simpleicons.org/codeigniter/EF4223"
+                src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/microsoftsqlserver/microsoftsqlserver-plain.svg"
                 width="20"
                 height="20"
-              />CodeIgniter 3
+                alt="SQL Server Icon"
+              />SQL Server
             </div>
+          </div>
+
+          <p
+            class="section-label reveal reveal-delay-3"
+            style="margin-top: 32px"
+          >
+            Data Visualisasi
+          </p>
+          <div class="tech-grid reveal reveal-delay-4">
             <div class="tech-chip">
               <img
-                src="https://cdn.simpleicons.org/laravel/FF2D20"
-                width="20"
-                height="20"
-              />Laravel
-            </div>
-            <div class="tech-chip">
-              <img
-                src="https://cdn.simpleicons.org/git/F05032"
-                width="20"
-                height="20"
-              />Git
-            </div>
-            <div class="tech-chip">
-              <img
-                src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/tableau.svg"
+                src="https://cdn.jsdelivr.net/gh/gilbarbara/logos@main/logos/tableau-icon.svg"
                 width="20"
                 height="20"
               />Tablue
             </div>
             <div class="tech-chip">
               <img
-                src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/powerbi.svg"
+                src="https://upload.wikimedia.org/wikipedia/commons/c/cf/New_Power_BI_Logo.svg"
                 width="20"
                 height="20"
               />Power BI
             </div>
+          </div>
+          <p
+            class="section-label reveal reveal-delay-3"
+            style="margin-top: 32px"
+          >
+            UI/UX
+          </p>
+          <div class="tech-grid reveal reveal-delay-4">
             <div class="tech-chip">
               <img
                 src="https://cdn.simpleicons.org/figma/F24E1E"
                 width="20"
                 height="20"
               />Figma
+            </div>
+          </div>
+          <p
+            class="section-label reveal reveal-delay-3"
+            style="margin-top: 32px"
+          >
+            Version Control
+          </p>
+          <div class="tech-grid reveal reveal-delay-4">
+            <div class="tech-chip">
+              <img
+                src="https://cdn.simpleicons.org/git/F05032"
+                width="20"
+                height="20"
+              />Git Hub
+            </div>
+            <div class="tech-chip">
+              <img
+                src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/sourcetree/sourcetree-original.svg"
+                width="20"
+                height="20"
+              />Sourcetree
             </div>
           </div>
         </div>
@@ -1881,7 +2015,7 @@
         dalam membangun solusi digital.
       </p>
       <div class="projects-grid">
-        <!-- Project 1 -->
+        <!-- Project 10 -->
         <div class="project-card reveal reveal-delay-1">
           <div
             class="project-thumb"
@@ -1892,7 +2026,7 @@
               style="width: 100%; height: 100%; position: relative"
             >
               <img
-                src="file/perpus3.png"
+                src="file/store1.png"
                 class="slide-img"
                 style="
                   position: absolute;
@@ -1905,7 +2039,7 @@
                 "
               />
               <img
-                src="file/perpus.png"
+                src="file/store2.png"
                 class="slide-img"
                 style="
                   position: absolute;
@@ -1918,7 +2052,7 @@
                 "
               />
               <img
-                src="file/perpus2.png"
+                src="file/store3.png"
                 class="slide-img"
                 style="
                   position: absolute;
@@ -1931,168 +2065,439 @@
                 "
               />
             </div>
-            <span class="project-num">01</span>
+            <span class="project-num">10</span>
+          </div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="project-tag">Next.js</span>
+              <span class="project-tag">React.js</span>
+              <span class="project-tag">TypeScript</span>
+              <span class="project-tag">Integrasi API</span>
+              <span class="project-tag">PostgreSQL</span>
+              <span class="project-tag">Clerk</span>
+              <span class="project-tag">Tailwind CSS</span>
+              <span class="project-tag">Shadcn/UI</span>
+            </div>
+            <h3 class="project-title">Store Children</h3>
+            <p class="project-desc">
+              Mengembangkan aplikasi web e-commerce untuk penjualan produk anak
+              menggunakan Next.js dan TypeScript. Mengimplementasikan
+              autentikasi pengguna dengan Clerk, database PostgreSQL melalui
+              Neon, serta ORM Prisma untuk pengelolaan data. Sistem juga
+              dilengkapi admin panel yang memungkinkan administrator melakukan
+              pengelolaan produk dan kategori secara terpusat melalui antarmuka
+              yang responsif dan modern menggunakan Tailwind CSS dan Shadcn/UI.
+            </p>
+            <div class="project-links">
+              <a
+                href="https://github.com/AditiaPutra16/website-store-children-public"
+                class="project-link"
+                >GitHub</a
+              >
+              <a
+                href="https://website-store-children-public.vercel.app/"
+                class="project-link"
+                target="_blank"
+                >Demo</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 9 -->
+        <div class="project-card reveal reveal-delay-1">
+          <div
+            class="project-thumb"
+            style="position: relative; overflow: hidden; padding: 0"
+          >
+            <div
+              class="slideshow"
+              style="width: 100%; height: 100%; position: relative"
+            >
+              <img
+                src="file/ands1.png"
+                class="slide-img"
+                style="
+                  position: absolute;
+                  inset: 0;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  opacity: 1;
+                  transition: opacity 0.8s ease;
+                "
+              />
+              <img
+                src="file/ands2.png"
+                class="slide-img"
+                style="
+                  position: absolute;
+                  inset: 0;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  opacity: 0;
+                  transition: opacity 0.8s ease;
+                "
+              />
+              <img
+                src="file/ands3.png"
+                class="slide-img"
+                style="
+                  position: absolute;
+                  inset: 0;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  opacity: 0;
+                  transition: opacity 0.8s ease;
+                "
+              />
+            </div>
+            <span class="project-num">09</span>
+          </div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="project-tag">TypeScript</span>
+              <span class="project-tag">Next.js</span>
+              <span class="project-tag">HTML / CSS</span>
+              <span class="project-tag">Integrasi API</span>
+              <span class="project-tag">Routing</span>
+            </div>
+            <h3 class="project-title">Ands.Bakehouse</h3>
+            <p class="project-desc">
+              Ands.Bakehouse adalah aplikasi web katalog produk bakery yang
+              dibangun sebagai prototype digital showcase untuk menampilkan
+              koleksi produk secara terstruktur dan visual. Aplikasi ini
+              dirancang untuk mensimulasikan pengalaman belanja digital yang
+              nyaman, lengkap dengan navigasi yang intuitif dan tampilan yang
+              menarik.
+            </p>
+            <div class="project-links">
+              <a
+                href="https://github.com/AditiaPutra16/ands_proyek"
+                class="project-link"
+                >GitHub</a
+              >
+              <a
+                href="https://ands-bakery.vercel.app/"
+                class="project-link"
+                target="_blank"
+                >Demo</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 8 -->
+        <div class="project-card reveal reveal-delay-1">
+          <div
+            class="project-thumb"
+            style="position: relative; overflow: hidden; padding: 0"
+          >
+            <div
+              class="slideshow"
+              style="width: 100%; height: 100%; position: relative"
+            >
+              <img
+                src="file/office1.png"
+                class="slide-img"
+                style="
+                  position: absolute;
+                  inset: 0;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  opacity: 1;
+                  transition: opacity 0.8s ease;
+                "
+              />
+              <img
+                src="file/office2.png"
+                class="slide-img"
+                style="
+                  position: absolute;
+                  inset: 0;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  opacity: 0;
+                  transition: opacity 0.8s ease;
+                "
+              />
+              <img
+                src="file/office3.png"
+                class="slide-img"
+                style="
+                  position: absolute;
+                  inset: 0;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  opacity: 0;
+                  transition: opacity 0.8s ease;
+                "
+              />
+              <img
+                src="file/office4.png"
+                class="slide-img"
+                style="
+                  position: absolute;
+                  inset: 0;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  opacity: 0;
+                  transition: opacity 0.8s ease;
+                "
+              />
+            </div>
+            <span class="project-num">08</span>
+          </div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="project-tag">TypeScript</span>
+              <span class="project-tag">Next.js</span>
+              <span class="project-tag">HTML / CSS</span>
+              <span class="project-tag">Integrasi API</span>
+              <span class="project-tag">Routing</span>
+            </div>
+            <h3 class="project-title">Office Space</h3>
+            <p class="project-desc">
+              Mengembangkan web katalog Office Space sebagai media eksplorasi
+              konsep digital katalog ruang kerja. Aplikasi ini menampilkan
+              informasi fasilitas, harga, foto, alamat dan detail ruang dengan
+              tampilan yang modern dan responsif. Proyek ini berfokus pada
+              pengembangan front-end, struktur layout yang rapi, routing, serta
+              penyajian informasi yang mudah dipahami oleh pengguna.
+            </p>
+            <div class="project-links">
+              <a
+                href="https://github.com/AditiaPutra16/space_office"
+                class="project-link"
+                >GitHub</a
+              >
+              <a
+                href="https://space-office.vercel.app/"
+                class="project-link"
+                target="_blank"
+                >Demo</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 7 -->
+        <div class="project-card reveal reveal-delay-1">
+          <div
+            class="project-thumb"
+            style="position: relative; overflow: hidden; padding: 0"
+          >
+            <div
+              class="slideshow"
+              style="width: 100%; height: 100%; position: relative"
+            >
+              <img
+                src="file/painee.png"
+                class="slide-img"
+                style="
+                  position: absolute;
+                  inset: 0;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  opacity: 1;
+                  transition: opacity 0.8s ease;
+                "
+              />
+              <img
+                src="file/painee1.png"
+                class="slide-img"
+                style="
+                  position: absolute;
+                  inset: 0;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  opacity: 0;
+                  transition: opacity 0.8s ease;
+                "
+              />
+              <img
+                src="file/painee2.png"
+                class="slide-img"
+                style="
+                  position: absolute;
+                  inset: 0;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  opacity: 0;
+                  transition: opacity 0.8s ease;
+                "
+              />
+            </div>
+            <span class="project-num">07</span>
+          </div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="project-tag">PHP</span>
+              <span class="project-tag">HTML / CSS</span>
+              <span class="project-tag">Bootstrap</span>
+              <span class="project-tag">MySQL</span>
+              <span class="project-tag">Laravel</span>
+            </div>
+            <h3 class="project-title">Painee Bakery</h3>
+            <p class="project-desc">
+              Painee Bakery adalah sebuah aplikasi web untuk katalog usaha
+              cheesecake. Project ini menampilkan antarmuka yang user-friendly
+              untuk pelanggan melihat menu cheesecake, serta menyediakan backend
+              sederhana untuk admin mengelola produk. Project ini bertujuan
+              untuk memudahkan pelanggan melihat menu cheesecake.
+            </p>
+            <div class="project-links">
+              <a
+                href="https://github.com/AditiaPutra16/Painee-bakery"
+                class="project-link"
+                >GitHub</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 6 -->
+        <div class="project-card reveal reveal-delay-1">
+          <div
+            class="project-thumb"
+            style="position: relative; overflow: hidden; padding: 0"
+          >
+            <div
+              class="slideshow"
+              style="width: 100%; height: 100%; position: relative"
+            >
+              <img
+                src="file/qms1.png"
+                class="slide-img"
+                style="
+                  position: absolute;
+                  inset: 0;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  opacity: 1;
+                  transition: opacity 0.8s ease;
+                "
+              />
+              <img
+                src="file/kento_sidebar.png"
+                class="slide-img"
+                style="
+                  position: absolute;
+                  inset: 0;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  opacity: 0;
+                  transition: opacity 0.8s ease;
+                "
+              />
+              <img
+                src="file/kento_matdel.png"
+                class="slide-img"
+                style="
+                  position: absolute;
+                  inset: 0;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  opacity: 0;
+                  transition: opacity 0.8s ease;
+                "
+              />
+              <img
+                src="file/kento.png"
+                class="slide-img"
+                style="
+                  position: absolute;
+                  inset: 0;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  opacity: 0;
+                  transition: opacity 0.8s ease;
+                "
+              />
+              <img
+                src="file/kento_form_psa.png"
+                class="slide-img"
+                style="
+                  position: absolute;
+                  inset: 0;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  opacity: 0;
+                  transition: opacity 0.8s ease;
+                "
+              />
+              <img
+                src="file/kento_report.png"
+                class="slide-img"
+                style="
+                  position: absolute;
+                  inset: 0;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  opacity: 0;
+                  transition: opacity 0.8s ease;
+                "
+              />
+              <img
+                src="file/psa.png"
+                class="slide-img"
+                style="
+                  position: absolute;
+                  inset: 0;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  opacity: 0;
+                  transition: opacity 0.8s ease;
+                "
+              />
+              <img
+                src="file/psa_report.png"
+                class="slide-img"
+                style="
+                  position: absolute;
+                  inset: 0;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  opacity: 0;
+                  transition: opacity 0.8s ease;
+                "
+              />
+            </div>
+            <span class="project-num">06</span>
           </div>
           <div class="project-body">
             <div class="project-tags">
               <span class="project-tag">PHP</span
-              ><span class="project-tag">MySQL</span
-              ><span class="project-tag">Laravel</span>
+              ><span class="project-tag">JavaScript</span
+              ><span class="project-tag">HTML / CSS</span
+              ><span class="project-tag">SQL Server</span
+              ><span class="project-tag">CI3</span
+              ><span class="project-tag">Agile</span>
             </div>
-            <h3 class="project-title">Sistem Perpustakaan</h3>
+            <h3 class="project-title">Digi-Kentokai</h3>
             <p class="project-desc">
-              Sistem Perpustakaan merupakan aplikasi berbasis web yang dirancang
-              untuk mengelola seluruh aktivitas operasional perpustakaan secara
-              terintegrasi. Sistem ini mencakup pengelolaan data buku, anggota,
-              serta proses peminjaman dan pengembalian.
+              Sistem digital untuk mendukung proses audit pada area packaging
+              melalui checklist terstandarisasi, memungkinkan pencatatan
+              real-time dan meningkatkan transparansi evaluasi kepatuhan standar
+              packaging.
             </p>
-            <div class="project-links">
-              <a
-                href="https://github.com/AditiaPutra16/book_rentt"
-                class="project-link"
-                >GitHub</a
-              >
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 2 -->
-        <div class="project-card reveal reveal-delay-1">
-          <div class="project-thumb">
-            <img
-              src="file/kekom.png"
-              alt="Enkripsi"
-              style="
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                display: block;
-              "
-            />
-            <span class="project-num">02</span>
-          </div>
-          <div class="project-body">
-            <div class="project-tags">
-              <span class="project-tag">Java</span
-              ><span class="project-tag">HTML/CSS</span
-              ><span class="project-tag">Encryption</span
-              ><span class="project-tag">Decryption</span>
-            </div>
-            <h3 class="project-title">File Encryption & Decryption</h3>
-            <p class="project-desc">
-              File Encryption & Decryption with RSA Key merupakan aplikasi yang
-              dirancang untuk mengamankan file dengan menggunakan algoritma
-              kriptografi RSA. Sistem ini memungkinkan enkripsi dan dekripsi
-              file untuk menjaga kerahasiaan informasi.
-            </p>
-            <div class="project-links">
-              <a
-                href="https://github.com/AditiaPutra16/Hybrid-Cryptography-AES-RSA/tree/main/Final_Kekom"
-                class="project-link"
-                >GitHub</a
-              >
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 3 -->
-        <div class="project-card reveal reveal-delay-1">
-          <div class="project-thumb">
-            <img
-              src="file/cuaca2.png"
-              alt="Weather"
-              style="
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                display: block;
-              "
-            />
-            <span class="project-num">03</span>
-          </div>
-          <div class="project-body">
-            <div class="project-tags">
-              <span class="project-tag">Java</span>
-              <span class="project-tag">Kotlin</span>
-              <span class="project-tag">Flutter</span
-              ><span class="project-tag">API</span
-              ><span class="project-tag">Android Studio</span>
-            </div>
-            <h3 class="project-title">Real Time Weather</h3>
-            <p class="project-desc">
-              Real Time Weather merupakan aplikasi android yang menampilkan
-              informasi cuaca secara real-time berdasarkan lokasi yang dicari,
-              termasuk prediksi cuaca 7 hari ke depan menggunakan integrasi API
-              cuaca.
-            </p>
-            <div class="project-links">
-              <a
-                href="https://github.com/AditiaPutra16/AplikasiCuaca"
-                class="project-link"
-                >GitHub</a
-              >
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 4 -->
-        <div class="project-card reveal reveal-delay-1">
-          <div
-            class="project-thumb"
-            style="position: relative; overflow: hidden; padding: 0"
-          >
-            <div
-              class="slideshow"
-              style="width: 100%; height: 100%; position: relative"
-            >
-              <img
-                src="file/ringkasan.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 1;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/ringkasan2.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
-            </div>
-            <span class="project-num">04</span>
-          </div>
-          <div class="project-body">
-            <div class="project-tags">
-              <span class="project-tag">Python</span
-              ><span class="project-tag">NLP</span
-              ><span class="project-tag">Machine Learning</span>
-            </div>
-            <h3 class="project-title">Text Summarization Sundanese</h3>
-            <p class="project-desc">
-              Sistem berbasis NLP yang menghasilkan ringkasan teks berbahasa
-              Sunda secara otomatis menggunakan metode extractive summarization,
-              mempertahankan makna utama dari teks asli.
-            </p>
-            <div class="project-links">
-              <a
-                href="https://github.com/AditiaPutra16/Text-Summarization-Sundanese-Language"
-                class="project-link"
-                >GitHub</a
-              >
-            </div>
           </div>
         </div>
 
@@ -2244,7 +2649,7 @@
           </div>
         </div>
 
-        <!-- Project 6 -->
+        <!-- Project 4 -->
         <div class="project-card reveal reveal-delay-1">
           <div
             class="project-thumb"
@@ -2255,7 +2660,7 @@
               style="width: 100%; height: 100%; position: relative"
             >
               <img
-                src="file/qms1.png"
+                src="file/ringkasan.png"
                 class="slide-img"
                 style="
                   position: absolute;
@@ -2268,85 +2673,7 @@
                 "
               />
               <img
-                src="file/kento_sidebar.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/kento_matdel.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/kento.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/kento_form_psa.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/kento_report.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/psa.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/psa_report.png"
+                src="file/ringkasan2.png"
                 class="slide-img"
                 style="
                   position: absolute;
@@ -2359,277 +2686,179 @@
                 "
               />
             </div>
-            <span class="project-num">06</span>
+            <span class="project-num">04</span>
+          </div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="project-tag">Python</span
+              ><span class="project-tag">NLP</span
+              ><span class="project-tag">Machine Learning</span>
+            </div>
+            <h3 class="project-title">Text Summarization Sundanese</h3>
+            <p class="project-desc">
+              Sistem berbasis NLP yang menghasilkan ringkasan teks berbahasa
+              Sunda secara otomatis menggunakan metode extractive summarization,
+              mempertahankan makna utama dari teks asli.
+            </p>
+            <div class="project-links">
+              <a
+                href="https://github.com/AditiaPutra16/Text-Summarization-Sundanese-Language"
+                class="project-link"
+                >GitHub</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 3 -->
+        <div class="project-card reveal reveal-delay-1">
+          <div class="project-thumb">
+            <img
+              src="file/cuaca2.png"
+              alt="Weather"
+              style="
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+              "
+            />
+            <span class="project-num">03</span>
+          </div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="project-tag">Java</span>
+              <span class="project-tag">Kotlin</span>
+              <span class="project-tag">Flutter</span
+              ><span class="project-tag">API</span
+              ><span class="project-tag">Android Studio</span>
+            </div>
+            <h3 class="project-title">Real Time Weather</h3>
+            <p class="project-desc">
+              Real Time Weather merupakan aplikasi android yang menampilkan
+              informasi cuaca secara real-time berdasarkan lokasi yang dicari,
+              termasuk prediksi cuaca 7 hari ke depan menggunakan integrasi API
+              cuaca.
+            </p>
+            <div class="project-links">
+              <a
+                href="https://github.com/AditiaPutra16/AplikasiCuaca"
+                class="project-link"
+                >GitHub</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="project-card reveal reveal-delay-1">
+          <div class="project-thumb">
+            <img
+              src="file/kekom.png"
+              alt="Enkripsi"
+              style="
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+              "
+            />
+            <span class="project-num">02</span>
+          </div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="project-tag">Java</span
+              ><span class="project-tag">HTML/CSS</span
+              ><span class="project-tag">Encryption</span
+              ><span class="project-tag">Decryption</span>
+            </div>
+            <h3 class="project-title">File Encryption & Decryption</h3>
+            <p class="project-desc">
+              File Encryption & Decryption with RSA Key merupakan aplikasi yang
+              dirancang untuk mengamankan file dengan menggunakan algoritma
+              kriptografi RSA. Sistem ini memungkinkan enkripsi dan dekripsi
+              file untuk menjaga kerahasiaan informasi.
+            </p>
+            <div class="project-links">
+              <a
+                href="https://github.com/AditiaPutra16/Hybrid-Cryptography-AES-RSA/tree/main/Final_Kekom"
+                class="project-link"
+                >GitHub</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 1 -->
+        <div class="project-card reveal reveal-delay-1">
+          <div
+            class="project-thumb"
+            style="position: relative; overflow: hidden; padding: 0"
+          >
+            <div
+              class="slideshow"
+              style="width: 100%; height: 100%; position: relative"
+            >
+              <img
+                src="file/perpus3.png"
+                class="slide-img"
+                style="
+                  position: absolute;
+                  inset: 0;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  opacity: 1;
+                  transition: opacity 0.8s ease;
+                "
+              />
+              <img
+                src="file/perpus.png"
+                class="slide-img"
+                style="
+                  position: absolute;
+                  inset: 0;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  opacity: 0;
+                  transition: opacity 0.8s ease;
+                "
+              />
+              <img
+                src="file/perpus2.png"
+                class="slide-img"
+                style="
+                  position: absolute;
+                  inset: 0;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  opacity: 0;
+                  transition: opacity 0.8s ease;
+                "
+              />
+            </div>
+            <span class="project-num">01</span>
           </div>
           <div class="project-body">
             <div class="project-tags">
               <span class="project-tag">PHP</span
-              ><span class="project-tag">JavaScript</span
-              ><span class="project-tag">HTML / CSS</span
-              ><span class="project-tag">SQL Server</span
-              ><span class="project-tag">CI3</span
-              ><span class="project-tag">Agile</span>
+              ><span class="project-tag">MySQL</span
+              ><span class="project-tag">Laravel</span>
             </div>
-            <h3 class="project-title">Digi-Kentokai</h3>
+            <h3 class="project-title">Sistem Perpustakaan</h3>
             <p class="project-desc">
-              Sistem digital untuk mendukung proses audit pada area packaging
-              melalui checklist terstandarisasi, memungkinkan pencatatan
-              real-time dan meningkatkan transparansi evaluasi kepatuhan standar
-              packaging.
-            </p>
-          </div>
-        </div>
-
-        <!-- Project 7 -->
-        <div class="project-card reveal reveal-delay-1">
-          <div
-            class="project-thumb"
-            style="position: relative; overflow: hidden; padding: 0"
-          >
-            <div
-              class="slideshow"
-              style="width: 100%; height: 100%; position: relative"
-            >
-              <img
-                src="file/painee.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 1;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/painee1.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/painee2.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
-            </div>
-            <span class="project-num">07</span>
-          </div>
-          <div class="project-body">
-            <div class="project-tags">
-              <span class="project-tag">PHP</span>
-              <span class="project-tag">HTML / CSS</span>
-              <span class="project-tag">Bootstrap</span>
-              <span class="project-tag">MySQL</span>
-              <span class="project-tag">Laravel</span>
-            </div>
-            <h3 class="project-title">Painee Bakery</h3>
-            <p class="project-desc">
-              Painee Bakery adalah sebuah aplikasi web untuk katalog usaha
-              cheesecake. Project ini menampilkan antarmuka yang user-friendly
-              untuk pelanggan melihat menu cheesecake, serta menyediakan backend
-              sederhana untuk admin mengelola produk. Project ini bertujuan
-              untuk memudahkan pelanggan melihat menu cheesecake.
+              Sistem Perpustakaan merupakan aplikasi berbasis web yang dirancang
+              untuk mengelola seluruh aktivitas operasional perpustakaan secara
+              terintegrasi. Sistem ini mencakup pengelolaan data buku, anggota,
+              serta proses peminjaman dan pengembalian.
             </p>
             <div class="project-links">
               <a
-                href="https://github.com/AditiaPutra16/Painee-bakery"
+                href="https://github.com/AditiaPutra16/book_rentt"
                 class="project-link"
                 >GitHub</a
-              >
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 8 -->
-        <div class="project-card reveal reveal-delay-1">
-          <div
-            class="project-thumb"
-            style="position: relative; overflow: hidden; padding: 0"
-          >
-            <div
-              class="slideshow"
-              style="width: 100%; height: 100%; position: relative"
-            >
-              <img
-                src="file/office1.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 1;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/office2.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/office3.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/office4.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
-            </div>
-            <span class="project-num">08</span>
-          </div>
-          <div class="project-body">
-            <div class="project-tags">
-              <span class="project-tag">TypeScript</span>
-              <span class="project-tag">Next.js</span>
-              <span class="project-tag">HTML / CSS</span>
-              <span class="project-tag">Integrasi API</span>
-              <span class="project-tag">Routing</span>
-            </div>
-            <h3 class="project-title">Office Space</h3>
-            <p class="project-desc">
-              Mengembangkan web katalog Office Space sebagai media eksplorasi
-              konsep digital katalog ruang kerja. Aplikasi ini menampilkan
-              informasi fasilitas, harga, foto, alamat dan detail ruang dengan
-              tampilan yang modern dan responsif. Proyek ini berfokus pada
-              pengembangan front-end, struktur layout yang rapi, routing, serta
-              penyajian informasi yang mudah dipahami oleh pengguna.
-            </p>
-            <div class="project-links">
-              <a
-                href="https://github.com/AditiaPutra16/space_office"
-                class="project-link"
-                >GitHub</a
-              >
-              <a href="https://space-office.vercel.app/" class="project-link"
-                >Demo</a
-              >
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 9 -->
-        <div class="project-card reveal reveal-delay-1">
-          <div
-            class="project-thumb"
-            style="position: relative; overflow: hidden; padding: 0"
-          >
-            <div
-              class="slideshow"
-              style="width: 100%; height: 100%; position: relative"
-            >
-              <img
-                src="file/ands1.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 1;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/ands2.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
-              <img
-                src="file/ands3.png"
-                class="slide-img"
-                style="
-                  position: absolute;
-                  inset: 0;
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0;
-                  transition: opacity 0.8s ease;
-                "
-              />
-            </div>
-            <span class="project-num">09</span>
-          </div>
-          <div class="project-body">
-            <div class="project-tags">
-              <span class="project-tag">TypeScript</span>
-              <span class="project-tag">Next.js</span>
-              <span class="project-tag">HTML / CSS</span>
-              <span class="project-tag">Integrasi API</span>
-              <span class="project-tag">Routing</span>
-            </div>
-            <h3 class="project-title">Ands.Bakehouse</h3>
-            <p class="project-desc">
-              Ands.Bakehouse adalah aplikasi web katalog produk bakery yang
-              dibangun sebagai prototype digital showcase untuk menampilkan
-              koleksi produk secara terstruktur dan visual. Aplikasi ini
-              dirancang untuk mensimulasikan pengalaman belanja digital yang
-              nyaman, lengkap dengan navigasi yang intuitif dan tampilan yang
-              menarik.
-            </p>
-            <div class="project-links">
-              <a
-                href="https://github.com/AditiaPutra16/ands_proyek"
-                class="project-link"
-                >GitHub</a
-              >
-              <a href="https://ands-bakery.vercel.app/" class="project-link"
-                >Demo</a
               >
             </div>
           </div>
@@ -2699,6 +2928,15 @@
           </div>
           <div class="skill-item">
             <div class="skill-row">
+              <span class="skill-name">Kotlin</span
+              ><span class="skill-pct">60%</span>
+            </div>
+            <div class="skill-bar">
+              <div class="skill-fill" data-w="70"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-row">
               <span class="skill-name">HTML & CSS</span
               ><span class="skill-pct">90%</span>
             </div>
@@ -2717,6 +2955,15 @@
           </div>
           <div class="skill-item">
             <div class="skill-row">
+              <span class="skill-name">React.js</span
+              ><span class="skill-pct">70%</span>
+            </div>
+            <div class="skill-bar">
+              <div class="skill-fill" data-w="70"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-row">
               <span class="skill-name">Laravel</span
               ><span class="skill-pct">75%</span>
             </div>
@@ -2726,7 +2973,7 @@
           </div>
           <div class="skill-item">
             <div class="skill-row">
-              <span class="skill-name">CI3</span
+              <span class="skill-name">CodeIgniter</span
               ><span class="skill-pct">85%</span>
             </div>
             <div class="skill-bar">
@@ -2735,7 +2982,16 @@
           </div>
           <div class="skill-item">
             <div class="skill-row">
-              <span class="skill-name">MySQL & Database</span
+              <span class="skill-name">Flutter</span
+              ><span class="skill-pct">60%</span>
+            </div>
+            <div class="skill-bar">
+              <div class="skill-fill" data-w="85"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-row">
+              <span class="skill-name">RDBMS</span
               ><span class="skill-pct">85%</span>
             </div>
             <div class="skill-bar">
@@ -2861,15 +3117,16 @@
               PT TD AUTOMOTIVE COMPRESSOR INDONESIA
             </div>
             <p class="timeline-desc">
-              Development aplikasi berbasis web Quality Management System
-              (QMS).<br />
-              Development aplikasi berbasis web Tooling Management System
-              (TMS).<br />
-              Development aplikasi berbasis web Digi-Kentokai System.<br />
-              Melakukan analisis kebutuhan user dan menyusun desain projek &
-              database.<br />
-              Implementasi rancangan dengan PHP, SQL Server, Laragon, dan Git
-              Server.
+              • Membangun web internal sistem Quality Management secara
+              end-to-end menggunakan CodeIgniter, PHP, JavaScript, dan SQL
+              Server, berhasil mengurangi biaya operasional sebesar 85% per
+              tahun untuk aplikasi terkait.<br />
+              • Menyelesaikan digitalisasi proses kentokai melalui implementasi
+              web internal, mengotomatisasi workflow yang sebelumnya manual dan
+              meningkatkan efisiensi operasional.<br />
+              • Mengembangkan RESTful API dan arsitektur database untuk
+              mendukung sistem Quality Management dan sistem Kentokai
+              (packaging) dengan struktur yang skalabel.
             </p>
             <div class="timeline-badges">
               <span class="timeline-badge">PHP</span>
@@ -2891,11 +3148,11 @@
               Informatika - Universitas Al Azhar Indonesia
             </div>
             <p class="timeline-desc">
-              Membantu mahasiswa dalam memahami konsep pemrograman dasar,
+              • Membantu mahasiswa dalam memahami konsep pemrograman dasar,
               sintaksis, dan logika. <br />
-              Memberikan bimbingan dalam menulis kode C/C++ yang efisien dan
+              • Memberikan bimbingan dalam menulis kode C/C++ yang efisien dan
               terstandarisasi.<br />
-              Mengevaluasi tugas dengan umpan balik yang konstruktif.<br />
+              • Mengevaluasi tugas dengan umpan balik yang konstruktif.<br />
               Melakukan sesi konsultasi untuk membantu mahasiswa mengatasi
               tantangan dalam mata kuliah terkait.
             </p>
@@ -2917,11 +3174,11 @@
               Informatika - Universitas Al Azhar Indonesia
             </div>
             <p class="timeline-desc">
-              Membantu mahasiswa dalam memahami konsep dasar algoritma, struktur
-              data, dan logika pemrograman. <br />
-              Memberikan bimbingan dalam menulis kode Python yang efisien dan
+              • Membantu mahasiswa dalam memahami konsep dasar algoritma,
+              struktur data, dan logika pemrograman. <br />
+              • Memberikan bimbingan dalam menulis kode Python yang efisien dan
               terstandarisasi. <br />
-              Mengevaluasi tugas dengan umpan balik yang konstruktif. <br />
+              • Mengevaluasi tugas dengan umpan balik yang konstruktif. <br />
               Melakukan sesi konsultasi untuk membantu mahasiswa mengatasi
               tantangan dalam mata kuliah terkait.
             </p>
@@ -2939,12 +3196,16 @@
             <div class="timeline-role">Anggota Departemen Humas & Advokasi</div>
             <div class="timeline-org">Himpunan Mahasiswa Informatika</div>
             <p class="timeline-desc">
-              Membangun hubungan dengan pihak eksternal dan internal. <br />
-              Menjalankan program kerja diantaranya Studi Ekskursi, IF berbagi,
-              Kotak Aspirasi, Studi Banding, Glowing, Celebrate Day. <br />
-              Ketua pelaksana program kerja Studi Ekskursi. <br />
-              Memperjuangkan dan mengadvokasi kepentingan mahasiswa dalam
-              berbagai isu yang relevan.
+              • Membangun dan menjaga hubungan baik dengan pihak internal maupun
+              eksternal organisasi, dengan keyakinan bahwa relasi yang kuat
+              adalah fondasi kolaborasi yang produktif dan berkelanjutan.<br />
+              • Mengadvokasi kepentingan mahasiswa dalam berbagai isu relevan,
+              didorong oleh prinsip bahwa setiap suara mahasiswa layak didengar
+              dan diperjuangkan melalui jalur yang tepat dan terstruktur.<br />
+              • Memimpin pelaksanaan Studi Ekskursi sebagai Ketua Pelaksana,
+              mengkoordinasikan seluruh aspek teknis dan non-teknis acara karena
+              memahami bahwa keberhasilan sebuah program bergantung pada
+              perencanaan yang matang dan eksekusi yang terstruktur.<br />
             </p>
             <div class="timeline-badges">
               <span class="timeline-badge">Bekerja Tim</span>
@@ -2961,14 +3222,10 @@
             <div class="timeline-role">Anggota Departemen PSDM</div>
             <div class="timeline-org">Himpunan Mahasiswa Informatika</div>
             <p class="timeline-desc">
-              Menjabat sebagai sekretaris divisi dengan tanggung jawab mengelola
-              administrasi, dokumentasi kegiatan, serta penyusunan laporan
-              program kerja. <br />
-              Berkontribusi dalam perencanaan dan pelaksanaan program Latihan
-              Dasar Kepemimpinan (LDKM).<br />
-              Terlibat dalam penyelenggaraan program Pekan Olahraga (SONIC).<br />
-              Berkolaborasi dengan anggota tim dalam mengoordinasikan kegiatan
-              dan memastikan program berjalan sesuai rencana.
+              Mengelola administrasi divisi, dokumentasi kegiatan, dan
+              penyusunan laporan program kerja sebagai Sekretaris Divisi, dengan
+              kesadaran bahwa tertib administrasi adalah tulang punggung dari
+              setiap organisasi yang berjalan efektif dan akuntabel.
             </p>
             <div class="timeline-badges">
               <span class="timeline-badge">Bekerja Tim</span>
@@ -3154,7 +3411,7 @@
         const btn = document.getElementById("themeToggle");
         btn.setAttribute(
           "data-tip",
-          theme === "dark" ? "Switch to Light" : "Switch to Dark"
+          theme === "dark" ? "Switch to Light" : "Switch to Dark",
         );
       }
 
@@ -3245,7 +3502,7 @@
             if (e.isIntersecting) e.target.classList.add("visible");
           });
         },
-        { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+        { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
       );
       reveals.forEach((el) => observer.observe(el));
 
@@ -3262,7 +3519,7 @@
             }
           });
         },
-        { threshold: 0.3 }
+        { threshold: 0.3 },
       );
       document
         .querySelectorAll("#skills")
@@ -3302,7 +3559,7 @@
       const texts = [
         "// Web Developer · Data Science · Tech Explorer",
         "// Fresh Graduate · Problem Solver · Fast Learner",
-        "// Open to Work · Collaborative · Passionate Coder"
+        "// Open to Work · Collaborative · Passionate Coder",
       ];
       let tIdx = 0,
         cIdx = 0,
